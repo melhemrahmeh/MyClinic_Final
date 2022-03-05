@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 
 
 class PatientForm(ModelForm):
-    
     class Meta:
         model = Patient
         fields = '__all__'

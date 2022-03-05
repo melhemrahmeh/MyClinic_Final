@@ -13,17 +13,30 @@ class  AppointmentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.AppointmentSerializer
     
 
-# class DentistViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Dentist.objects.all()
-#     serializer_class = serializers.DentistSerializer
+class VisitViewSet(viewsets.ModelViewSet):
+    queryset =  models.Visit.objects.all()
+    serializer_class = serializers.VisitSerializer
     
 
-# class SecretaryViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Secretary.objects.all()
-#     serializer_class = serializers.SecretarySerializer
+class PaymentJournalViewSet(viewsets.ModelViewSet):
+    queryset =  models.PaymentJournal.objects.all()
+    serializer_class = serializers.PaymentJournalSerializer
      
 
-# class AdministartorViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Administrator.objects.all()
-#     serializer_class = serializers.AdministratorSerializer
+class VisitOperationViewSet(viewsets.ModelViewSet):
+    queryset =  models.VisitOperation.objects.all()
+    serializer_class = serializers.VisitOperationSerializer
+    
+class RoleViewSet(viewsets.ModelViewSet):
+    queryset =  models.Role.objects.all()
+    serializer_class = serializers.RoleSerializer
+    
+    
+class UserViewSet(viewsets.ModelViewSet):
+    queryset =  models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+    
+class ClinicViewSet(viewsets.ModelViewSet):
+    queryset =  models.Clinic.objects.all()
+    serializer_class = serializers.ClinicSerialize
     

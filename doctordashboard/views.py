@@ -62,12 +62,12 @@ def logOut(request):
     return redirect('loginpage')
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def dentistDashboard(request):
     return render(request, 'dentistdashboard.html')
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def addpatient(request):
     form = PatientForm()
     if request.method == 'POST':
@@ -79,7 +79,7 @@ def addpatient(request):
     return render(request, 'addpatient.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def patientlist(request):
     patients_list = Patient.objects.all()
     context = {
@@ -88,7 +88,7 @@ def patientlist(request):
     return render(request, 'patientlist.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def addappointment(request):
     form = AppointmentForm()
 
@@ -111,7 +111,7 @@ def createpatient(request):
     return Response(serializer.data)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def appointmentslist(request):
     appointmentslist = Appointment.objects.all()
     context = {
@@ -121,7 +121,7 @@ def appointmentslist(request):
     return render(request, 'appointmentslist.html', context)
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def showform(request):
     form = FormContactForm(request.POST or None)
     if form.is_valid():

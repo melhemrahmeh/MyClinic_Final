@@ -10,14 +10,6 @@ class Clinic(models.Model):
    
     clinicName = models.CharField(max_length=100, blank=True, null=True)
     
-FULLTIME = 'FT'
-PARTTIME = 'PT'
-CONTRACT = 'CT'
-WORKTYPE = [
-        (FULLTIME, 'Full Time'),
-        (PARTTIME, 'Part Time'),
-        (CONTRACT, 'Contract'),
-    ]
 
 
 class Role(models.Model):
@@ -98,10 +90,9 @@ class JournalEntryType(models.Model):
     title =  models.CharField(max_length=100)
     
     
-    
+
 # paymentjournal link it to the visit
 class PaymentJournal(models.Model):
-  
     patient =  models.OneToOneField(Patient, on_delete=models.CASCADE)
     journalentrytype =  models.OneToOneField(JournalEntryType, on_delete =  models.CASCADE)
     clinic =  models.OneToOneField(Clinic, on_delete=models.CASCADE)
