@@ -7,6 +7,10 @@ class PatientSerializer(serializers.ModelSerializer):
         model = Patient
         fields = '__all__'
         
+        
+    def create(self, validated_data):
+        return Patient.objects.create(validated_data)
+        
 class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment

@@ -1,0 +1,6 @@
+git add .
+git commit -m " nth commit"
+git push origin main
+npm run build
+netlify deploy - dir=./build
+netlify deploy --prod

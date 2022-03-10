@@ -1,0 +1,624 @@
+/********** Template CSS **********/
+
+:root {
+    --primary: #26b0c2;
+    --secondary: #354f8e;
+    --light: #eff5f9;
+    --dark: #1d2a4d;
+}
+
+.btn {
+    font-weight: 700;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    -webkit-box-shadow: 0 8px 6px -6px #555555;
+    -moz-box-shadow: 0 8px 6px -6px #555555;
+    box-shadow: 0 8px 6px -6px #555555;
+}
+
+.btn-primary {
+    color: #ffffff;
+}
+
+.btn-square {
+    width: 36px;
+    height: 36px;
+}
+
+.btn-sm-square {
+    width: 28px;
+    height: 28px;
+}
+
+.btn-lg-square {
+    width: 46px;
+    height: 46px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 30px;
+    bottom: 0;
+    border-radius: 50% 50% 0 0;
+    z-index: 99;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    font-family: "Jost", sans-serif;
+    position: relative;
+    margin-left: 30px;
+    padding: 30px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    outline: none;
+    transition: 0.5s;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+@media (min-width: 992px) {
+    .navbar-light .navbar-nav .nav-link::before {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 5px;
+        bottom: 0;
+        left: 50%;
+        background: var(--primary);
+        transition: 0.5s;
+    }
+    .navbar-light .navbar-nav .nav-link:hover::before,
+    .navbar-light .navbar-nav .nav-link.active::before {
+        width: 100%;
+        left: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-light .navbar-nav .nav-link {
+        margin-left: 0;
+        padding: 10px 0;
+    }
+}
+
+.hero-header {
+    background: url(../img/mainpageimage.jpg) top right no-repeat;
+    background-size: cover;
+}
+
+.service-item {
+    position: relative;
+    height: 350px;
+    padding: 0 30px;
+    transition: 0.5s;
+}
+
+.service-item .service-icon {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    border-radius: 50%;
+    transform: rotate(-14deg);
+}
+
+.service-item .service-icon i {
+    transform: rotate(15deg);
+}
+
+.service-item a.btn {
+    position: absolute;
+    width: 60px;
+    bottom: -48px;
+    left: 50%;
+    margin-left: -30px;
+    opacity: 0;
+}
+
+.service-item:hover a.btn {
+    bottom: -24px;
+    opacity: 1;
+}
+
+.price-carousel::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 50%;
+    bottom: 0;
+    left: 0;
+    background: var(--primary);
+    border-radius: 8px 8px 50% 50%;
+    z-index: -1;
+}
+
+.price-carousel .owl-nav {
+    margin-top: 35px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.price-carousel .owl-nav .owl-prev,
+.price-carousel .owl-nav .owl-next {
+    position: relative;
+    margin: 0 5px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    background: #ffffff;
+    font-size: 22px;
+    border-radius: 45px;
+    transition: 0.5s;
+}
+
+.price-carousel .owl-nav .owl-prev:hover,
+.price-carousel .owl-nav .owl-next:hover {
+    color: var(--dark);
+}
+
+@media (min-width: 576px) {
+    .team-item .row {
+        height: 350px;
+    }
+}
+
+.team-carousel .owl-nav {
+    position: absolute;
+    padding: 0 45px;
+    width: 100%;
+    height: 45px;
+    top: calc(50% - 22.5px);
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.team-carousel .owl-nav .owl-prev,
+.team-carousel .owl-nav .owl-next {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: var(--primary);
+    border-radius: 45px;
+    font-size: 22px;
+    transition: 0.5s;
+}
+
+.team-carousel .owl-nav .owl-prev:hover,
+.team-carousel .owl-nav .owl-next:hover {
+    background: var(--dark);
+}
+
+.testimonial-carousel .owl-dots {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    width: 20px;
+    height: 20px;
+    background: var(--light);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+.testimonial-carousel .owl-dot.active {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+}
+
+.testimonial-carousel .owl-item img {
+    width: 150px;
+    height: 150px;
+}
+
+
+/*Prices*/
+
+.service-price {
+    display: inline-block;
+    width: auto;
+    height: 38px;
+    background-color: #26b0c2;
+    -webkit-border-radius: 3px 4px 4px 3px;
+    -moz-border-radius: 3px 4px 4px 3px;
+    border-radius: 3px 4px 4px 3px;
+    border-left: 1px solid #26b0c2;
+    /* This makes room for the triangle */
+    margin-left: 19px;
+    position: relative;
+    color: white;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 38px;
+    padding: 0 10px 0 10px;
+}
+
+
+/* Makes the triangle */
+
+.service-price::before {
+    content: "";
+    position: absolute;
+    display: block;
+    left: -19px;
+    width: 0;
+    height: 0;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-right: 19px solid #26b0c2;
+}
+.service-price::after {
+    content: "";
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    display: block;
+    right: -19px;
+    width: 0;
+    height: 0;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid #26b0c2;
+}
+
+
+/*About Us page*/
+
+.about-shape {
+    position: absolute;
+    top: 60px;
+    left: -60px;
+    z-index: -9;
+}
+
+.about-front-img {
+    box-shadow: 0px 16px 32px 0px rgba(136, 136, 136, 0.2);
+}
+
+.about-title h5 {
+    margin-bottom: 27px;
+}
+
+.about-right-side {
+    padding-left: 23px;
+}
+
+.author-ava {
+    margin-right: 30px;
+}
+
+.author-desination h6 {
+    color: #4883d1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.author-desination h4 {
+    margin-bottom: 13px;
+}
+
+.single-item .mv-icon {
+    margin-right: 30px;
+}
+
+.mv-title h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.mv-title p {
+    padding-right: 73px;
+}
+
+.facalty-text p {
+    line-height: 26px;
+    padding-top: 25px;
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.about-text-list ul li {
+    margin-bottom: 20px;
+}
+
+.about-text-list ul li i {
+    height: 40px;
+    width: 40px;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 50%;
+    background: #f6f5ff;
+    padding-left: 3px;
+    margin-right: 20px;
+    transition: 0.4s;
+    display: inline-block;
+}
+
+.about-text-list ul li:hover i {
+    background: #4883d1;
+    color: #fff;
+}
+
+.about-text p {
+    padding-right: 46px;
+}
+
+.mv-text p {
+    font-size: 20px;
+    color: #223645;
+    margin-bottom: 0;
+    padding-right: 27px;
+    padding-top: 5px;
+}
+
+.mv-single-list {
+    padding: 30px 0;
+    border-top: 1px solid #dedeff;
+    border-bottom: 1px solid #dedeff;
+}
+
+.mv-icon {
+    margin-right: 30px;
+}
+
+.mv-right-img img {
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0px 16px 32px 0px rgba(205, 203, 255, 0.4);
+    border-radius: 5px;
+}
+
+.testi-quato-icon.about-icon-white {
+    float: right;
+    margin: 0;
+    margin-top: -49px;
+    margin-right: -70px;
+    position: relative;
+    z-index: 1;
+}
+
+.medical-icon-brand {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    text-align: center;
+    line-height: 100px;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 16px 32px 0px rgba(136, 136, 136, 0.2);
+    margin-right: 51px;
+    margin-top: 48px;
+    margin-left: 47px;
+    z-index: -9;
+}
+
+.medical-icon-brand-2 {
+    position: absolute;
+    z-index: 9;
+    right: -90px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.medical-icon-brand-3 {
+    right: -106px;
+    margin-top: 21px;
+}
+
+.medical-icon-brand::before {
+    position: absolute;
+    content: "";
+    left: -28px;
+    right: 0;
+    bottom: 0;
+    top: -30px;
+    height: 156px;
+    width: 156px;
+    border: 2px dashed #e6e6e6;
+    border-radius: 50%;
+}
+
+.medical-icon-brand::after {
+    position: absolute;
+    content: "";
+    left: -55px;
+    right: 0;
+    bottom: 0;
+    top: -58px;
+    height: 210px;
+    width: 210px;
+    border: 2px dashed #e6e6e6;
+    border-radius: 50%;
+}
+
+.about-right-content {
+    padding-right: 50px;
+}
+
+/*My clinic team*/
+.u-section-1 .u-sheet-1 {
+    min-height: 561px;
+  }
+  
+  .u-section-1 .u-repeater-1 {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    min-height: 441px;
+    grid-template-columns: calc(33.3333% - 15px) calc(33.3333% - 15px) calc(33.3333% - 15px);
+    height: auto;
+    grid-gap: 22px;
+  }
+  
+  .u-section-1 .u-repeater-item-1 {
+    background-image: none;
+  }
+  
+  .u-section-1 .u-container-layout-1 {
+    padding: 30px 20px;
+  }
+  
+  .u-section-1 .u-text-1 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-image-1 {
+    height: 222px;
+    margin-top: 17px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-text-2 {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-btn-1 {
+    background-image: none;
+    border-style: none none solid;
+    margin: 17px auto 0 0;
+    padding: 0;
+  }
+  
+  .u-section-1 .u-container-layout-2 {
+    padding: 30px 20px;
+  }
+  
+  .u-section-1 .u-text-3 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-image-2 {
+    height: 222px;
+    margin-top: 17px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-text-4 {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-btn-2 {
+    background-image: none;
+    border-style: none none solid;
+    margin: 17px auto 0 0;
+    padding: 0;
+  }
+  
+  .u-section-1 .u-container-layout-3 {
+    padding: 30px 20px;
+  }
+  
+  .u-section-1 .u-text-5 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-image-3 {
+    height: 222px;
+    margin-top: 17px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-text-6 {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+  
+  .u-section-1 .u-btn-3 {
+    background-image: none;
+    border-style: none none solid;
+    margin: 17px auto 0 0;
+    padding: 0;
+  }
+  
+  @media (max-width: 1199px) {
+    .u-section-1 .u-sheet-1 {
+      min-height: 484px;
+    }
+  
+    .u-section-1 .u-repeater-1 {
+      min-height: 364px;
+      grid-template-columns: repeat(3, calc(33.333333333333336% - 15px));
+    }
+  }
+  
+  @media (max-width: 991px) {
+    .u-section-1 .u-sheet-1 {
+      min-height: 956px;
+    }
+  
+    .u-section-1 .u-repeater-1 {
+      min-height: 836px;
+      grid-template-columns: repeat(2, calc(50% - 11.25px));
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .u-section-1 .u-repeater-1 {
+      grid-template-columns: 100%;
+    }
+  
+    .u-section-1 .u-container-layout-1 {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    .u-section-1 .u-image-1 {
+      height: 278px;
+    }
+  
+    .u-section-1 .u-container-layout-2 {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    .u-section-1 .u-image-2 {
+      height: 278px;
+    }
+  
+    .u-section-1 .u-container-layout-3 {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  
+    .u-section-1 .u-image-3 {
+      height: 278px;
+    }
+  }

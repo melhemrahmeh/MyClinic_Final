@@ -64,10 +64,10 @@ class Appointment(models.Model):
     #Think more about the relations
     #give each operation an estimated time both the dentist and patient know the time and benefit it
     patient =  models.OneToOneField(Patient, on_delete = models.CASCADE)
-    createdby =  models.ForeignKey(User, on_delete = models.CASCADE, related_name='+')
+    createdby =  models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
     room = models.OneToOneField(Room, on_delete = models.CASCADE)
     doctor = models.OneToOneField(User, on_delete =  models.CASCADE)
-    datetime = models.DateTimeField(blank=True, default=datetime.date.today, null=False)
+    datetime = models.DateTimeField(blank=True, default=datetime.date.today, null=True)
     duration =  models.DurationField()
     reason =  models.CharField(max_length=100)
     

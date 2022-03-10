@@ -1,25 +1,14 @@
+from django.urls import re_path
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 urlpatterns = [
-    path('', views.HomePage),
-    path('dentistDashboard/', views.dentistDashboard, name = 'home'),
-    path('addpatient/', views.addpatient),
-    path('patientlist/', views.patientlist),    
-    path('addappointment/', views.addappointment),
-    path('appointmentslist/', views.appointmentslist), 
-    path('showform/', views.showform),
-    path('register/', views.registerPage, name='register'),
-    path('loginpage/', views.loginPage, name='loginpage'),
-    # path('api-auth/', include('rest_framework.urls')),
-    # path('register/dentist', views.registerPage, name='dentistregister'),
-    # path('register/patient', views.registerPage, name='patientregister'),
-    # path('register/nurse', views.registerPage, name='nurseregister'),
-    # path('register/secretery', views.registerPage, name='secreteryregister'),
-    # path('register/administrator', views.registerPage, name='adnregister'),
-    path('logout/', views.logOut, name='logout'),
-    path("createpatient/", views.createpatient, name="createpatient"),
-    
-    #visitsummary
-]
+    re_path(r'^patient/$',views.patient),
+    re_path(r'^patient/([0-9]+)$',views.patient),
+    re_path(r'^appointment/$',views.Appointment),
+    re_path(r'^appointment/([0-9]+)$',views.Appointment),
+] 

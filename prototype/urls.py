@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 from .router import router
+from django.urls import re_path
+from doctordashboard.views import index
+
 
 urlpatterns = [
+    path('', index),
     path('admin/', admin.site.urls),
     path('', include('doctordashboard.urls')),
     path('api/', include(router.urls))
