@@ -17,12 +17,20 @@ from django.contrib import admin
 from django.urls import path , include
 from .router import router
 from django.urls import re_path
-from doctordashboard.views import index
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
+
 
 
 urlpatterns = [
-    path('', index),
     path('admin/', admin.site.urls),
-    path('', include('doctordashboard.urls')),
-    path('api/', include(router.urls))
+    path('', TemplateView.as_view(template_name='index.html')),
+    path('api/patients/', include('doctordashboard.urls')),
+    # path('api/', include(router.urls))
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

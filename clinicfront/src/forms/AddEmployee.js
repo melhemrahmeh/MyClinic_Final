@@ -1,4 +1,34 @@
-export default function AddPatient() {
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+
+export default function AddEmployee() {
+    let navigate = useNavigate();
+  const [state, setstate] = useState({});
+  const [firstname, setfirstname] = useState(null);
+  const [lastname, setLastname] = useState(null);
+  const [phonenumber, setPhonenumber] = useState(null);
+  const [email, setemail] = useState(null);
+  const [birthdate, setbirthdate] = useState(null);
+  const [address, setaddress] = useState(null);
+  const [gender, setgender] = useState(null);
+  const [medications, setmedication] = useState(null);
+  const [med_text, setmed_text] = useState(null);
+  const [allergies, setallergies] = useState(null);
+  const [allergies_text, setallergies_text] = useState(null);
+  const [e_firstName, sete_firstName] = useState(null);
+  const [e_lastname, sete_lastname] = useState(null);
+  const [e_contactnumber, sete_contactnumber] = useState(null);
+  const [e_relationship, sete_relationship] = useState(null);
+  const [bankname, set_bankname] = useState(null);
+  const [accontnum, set_accountnum] = useState(null);
+
+
+
+
+
+
     return (
         <div className="container-fluid bg-primary my-5 py-5">
             <div className="container py-5" style={{ "width": "100%", "alignItems": "center" }}>
@@ -21,6 +51,19 @@ export default function AddPatient() {
                                         <label for="date"> Employee Email</label>
                                         <input type="email" className="form-control bg-light border-0" placeholder="Email" style={{ height: '55px' }} />
                                     </div>
+
+                                    <div className="col-12 col-sm-6">
+                                        <label for="date"> Phone Number</label>
+                                        <input
+                                        type="tel"
+                                        placeholder="123-45-678"
+                                        value={phonenumber}
+                                        onChange={(e) => setPhonenumber(e.target.value)}
+                                        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                                        className="form-control bg-light border-0"
+                                        style={{ height: "55px" }}
+                                        />
+                                    </div>
                                     <div className="col-12 col-sm-6">
                                         <label for="myfile"> Sex</label>
                                         <select className="form-select bg-light border-0" style={{ height: '55px' }}>
@@ -40,24 +83,13 @@ export default function AddPatient() {
                                         <div className="date" id="date" data-target-input="nearest">
                                         </div>
                                     </div>
-                                    <div className="col-12 col-sm-6">
-                                        <br />
-                                        <label for="date"> Weight (Kilograms)</label>
-                                        <input type="text" className="form-control bg-light border-0" placeholder="Weight" style={{ height: '55px' }} />
-                                    </div>
-                                    <div className="col-12 col-sm-6">
-                                        <br />
-                                        <label for="date"> Height (Centimeters)</label>
-                                        <input type="text" className="form-control bg-light border-0" placeholder="Height" style={{ height: '55px' }} />
-                                    </div>
-
-
+                                    
                                     <div className="col-12 col-sm-6">
                                         <br />
                                         <label for="date"> Address</label>
                                         <input type="text" className="form-control bg-light border-0" placeholder="Address" style={{ height: '55px' }} />
                                     </div>
-                                    <div className="col-12 col-sm-6">
+                                    {/* <div className="col-12 col-sm-6">
                                         <br />
                                         <label for="myfile"> Martial Status</label>
                                         <select className="form-select bg-light border-0" style={{ height: '55px' }}>
@@ -68,7 +100,7 @@ export default function AddPatient() {
                                             <option value="Brushing"> Legaly separated </option>
                                             <option value="Check-Up"> Widowed </option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     <div className="col-12 col-sm-6">
                                         <br /> <br />
                                         <label for="date" style={{ "float": "left" }}> Taking any medications, currently?</label><br /> <br />

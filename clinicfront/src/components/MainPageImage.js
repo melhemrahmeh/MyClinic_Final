@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom"
+import React from "react";
+import axios from "axios";
+
+
 
 export default function MainPageImage() {
+
+  
   return (
     <div className="container-fluid bg-primary py-5 mb-5 hero-header">
       <div className="container py-5">

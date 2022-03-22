@@ -12,7 +12,7 @@ import Join from "./components/Pages/Join.js"
 import Material_Table from "./components/Tables/Material_Table.js"
 import PatientTable from "./components/Tables/PatientTable.js"
 import Main from "./Dashboard/Main.js"
-import React from 'react';
+
 
 
 import { Routes, Route } from "react-router-dom"

@@ -1,77 +1,181 @@
 from django.shortcuts import render, redirect
-from .models import Appointment, Patient
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from .models import Patient
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from . serializers import PatientSerializer, AppointmentSerializer
-from rest_framework.decorators import api_view
+from . serializers import PatientSerializer
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAdminUser
 
 
-def index(request, *args, **kwargs):
-    return render(request, 'index.html')
 
-@csrf_exempt
-def patient(request,id=0):
-    if request.method=='GET':
-        patient = Patient.objects.all()
-        patient_serializer = PatientSerializer(patient, many=True)
-        return JsonResponse(patient_serializer.data, safe=False)
+@api_view(['GET'])
+def getPatients(request):
+    patients = Patient.objects.all()
+    patient_serializer = PatientSerializer(patients, many=True)
+    return Response(patient_serializer.data)
 
-    elif request.method=='POST':
-        patient= JSONParser().parse(request)
-        patient_serializer = PatientSerializer(data=patient)
-        if patient_serializer.is_valid():
-            patient_serializer.save()
-            return JsonResponse("Added Successfully!!" , safe=False)
-        return JsonResponse("Failed to Add.",safe=False)
+
+@api_view(['GET'])
+def getPatient(request, pk):
+    patient = Patient.objects.get(_id=pk)
+    serializer = PatientSerializer(patient, many=False)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def postPatient(request):
+    permission_classes = [IsAdminUser]
+    patient = JSONParser().parse(request)
+    patient_serializer = PatientSerializer(data=patient)
+    if patient_serializer.is_valid():
+        patient_serializer.save()
+        return JsonResponse("Added Successfully!!", safe=False)
+    return JsonResponse("Failed to Add.", safe=False)
+
+@api_view(['PUT'])
+def putPatient(request, pk):
+    permission_classes = [IsAdminUser]
+    patient = JSONParser().parse(request)
+    patient_data = Patient.objects.get(_id=pk)
+    patient_serializer = PatientSerializer(patient_data, data=patient)
+    if patient_serializer.is_valid():
+        patient_serializer.save()
+        return JsonResponse("Updated Successfully!!", safe=False)
+    return JsonResponse("Failed to Update.", safe=False)
+   
+@api_view(['DELETE'])
+def deletePatient(request, pk):
+    permission_classes = [IsAdminUser]
+    patient = Patient.objects.get(_id=pk)
+    Patient.delete()
+    return Response('"Deleted Succeffully!!", safe=False') 
     
-    elif request.method=='PUT':
-        patient = JSONParser().parse(request)
-        patient_data = Patient.objects.get(patientid=patient['PatientID'])
-        patient_serializer=PatientSerializer(patient_data,data=patient)
-        if patient_serializer.is_valid():
-            patient_serializer.save()
-            return JsonResponse("Updated Successfully!!", safe=False)
-        return JsonResponse("Failed to Update.", safe=False)
+# def index(request, *args, **kwargs):
+#     return render(request, 'index.html')
 
-    elif request.method=='DELETE':
-        patient=Patient.objects.get(patientid=id)
-        patient.delete()
-        return JsonResponse("Deleted Succeffully!!", safe=False)
 
-@csrf_exempt
-def Appointment(request,id=0):
-    if request.method=='GET':
-        appointment = Appointment.objects.all()
-        appointment_serializer = Appo(appointment, many=True)
-        return JsonResponse(appointment_serializer.data, safe=False)
+# @api_view(['GET', 'POST'])
+# def patient(request):
+#     if request.method == 'GET':
+#         patient = Patient.objects.all()
+#         patient_serializer = PatientSerializer(patient, many=True)
+#         return JsonResponse(patient_serializer.data, safe=False)
 
-    elif request.method=='POST':
-        appointment_data = JSONParser().parse(request)
-        appointment_serializer  = AppointmentSerializer(data=employee_data)
-        if appointment_serializer.is_valid():
-            appointment_serializer.save()
-            return JsonResponse("Added Successfully!!" , safe=False)
-        return JsonResponse("Failed to Add.",safe=False)
+#     elif request.method == 'POST':
+#         patient = JSONParser().parse(request)
+#         patient_serializer = PatientSerializer(data=patient)
+#         if patient_serializer.is_valid():
+#             patient_serializer.save()
+#             return JsonResponse("Added Successfully!!", safe=False)
+#         return JsonResponse("Failed to Add.", safe=False)
+
+    # elif request.method == 'PUT':
+    #     patient = JSONParser().parse(request)
+    #     patient_data = Patient.objects.get(pk=patient['PatientID'])
+    #     patient_serializer = PatientSerializer(patient_data, data=patient)
+    #     if patient_serializer.is_valid():
+    #         patient_serializer.save()
+    #         return JsonResponse("Updated Successfully!!", safe=False)
+    #     return JsonResponse("Failed to Update.", safe=False)
+
+    # elif request.method == 'DELETE':
+    #     patient = Patient.objects.get(pk=pk)
+    #     patient.delete()
+    #     return JsonResponse("Deleted Succeffully!!", safe=False)
+
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def patient_detail(request, pk):
+#     try:
+#         patient =  Patient.objects.get(pk=pk)
+        
+#     except Patient.DoesNotExist:
+#         return HttpResponse(status=404)
     
-    elif request.method=='PUT':
-        appointment_data = JSONParser().parse(request)
-        appointment =Appointment.objects.get(EmployeeId=employee_data['EmployeeId'])
-        appointment_serializer =AppointmentSerializer(appointment,data=appointment_data)
-        if appointment_serializer.is_valid():
-            appointment_serializer.save()
-            return JsonResponse("Updated Successfully!!", safe=False)
-        return JsonResponse("Failed to Update.", safe=False)
+#     if request.method == 'GET':
+#         serializer =  PatientSerializer(patient)
+#         return JsonResponse(patient_serializer.data, safe=False)
+    
+#     elif request.method == 'PUT':
+#         patient = JSONParser().parse(request)
+#         patient_serializer = PatientSerializer(patient, data=patient)
+#         if patient_serializer.is_valid():
+#             patient_serializer.save()
+#             return JsonResponse("Updated Successfully!!", safe=False)
+#         return JsonResponse("Failed to Update.", safe=  False)
+    
+#     elif request.method == 'DELETE':
+#         patient.delete()
+#         return HttpResponse(status=204)
+        
 
-    elif request.method=='DELETE':
-        appointment = Appointment.objects.get(EmployeeId=id)
-        appointment.delete()
-        return JsonResponse("Deleted Succeffully!!", safe=False)
+# def user(request, id = 0):
+#     if request.method == 'GET':
+#         patient = Patient.objects.all()
+#         patient_serializer = PatientSerializer(patient, many=True)
+#         return JsonResponse(patient_serializer.data, safe=False)
+
+#     elif request.method == 'POST':
+#         patient = JSONParser().parse(request)
+#         patient_serializer = PatientSerializer(data=patient)
+#         if patient_serializer.is_valid():
+#             patient_serializer.save()
+#             return JsonResponse("Added Successfully!!", safe=False)
+#         return JsonResponse("Failed to Add.", safe=False)
+
+#     elif request.method == 'PUT':
+#         patient = JSONParser().parse(request)
+#         patient_data = Patient.objects.get(patientid=patient['PatientID'])
+#         patient_serializer = PatientSerializer(patient_data, data=patient)
+#         if patient_serializer.is_valid():
+#             patient_serializer.save()
+#             return JsonResponse("Updated Successfully!!", safe=False)
+#         return JsonResponse("Failed to Update.", safe=False)
+
+#     elif request.method == 'DELETE':
+#         patient = Patient.objects.get(patientid=id)
+#         patient.delete()
+#         return JsonResponse("Deleted Succeffully!!", safe=False)
+
+
+
+
+
+# @csrf_exempt
+# def Appointment(request, id=0):
+#     if request.method == 'GET':
+#         appointment = Appointment.objects.all()
+#         appointment_serializer = Appo(appointment, many=True)
+#         return JsonResponse(appointment_serializer.data, safe=False)
+
+#     elif request.method == 'POST':
+#         appointment_data = JSONParser().parse(request)
+#         appointment_serializer = AppointmentSerializer(data=employee_data)
+#         if appointment_serializer.is_valid():
+#             appointment_serializer.save()
+#             return JsonResponse("Added Successfully!!", safe=False)
+#         return JsonResponse("Failed to Add.", safe=False)
+
+#     elif request.method == 'PUT':
+#         appointment_data = JSONParser().parse(request)
+#         appointment = Appointment.objects.get(
+#             EmployeeId=employee_data['EmployeeId'])
+#         appointment_serializer = AppointmentSerializer(
+#             appointment, data=appointment_data)
+#         if appointment_serializer.is_valid():
+#             appointment_serializer.save()
+#             return JsonResponse("Updated Successfully!!", safe=False)
+#         return JsonResponse("Failed to Update.", safe=False)
+
+#     elif request.method == 'DELETE':
+#         appointment = Appointment.objects.get(EmployeeId=id)
+#         appointment.delete()
+#         return JsonResponse("Deleted Succeffully!!", safe=False)
 
 
 # # @csrf_exempt
@@ -80,9 +184,6 @@ def Appointment(request,id=0):
 # #     file_name = default_storage.save(file.name,file)
 
 # #     return JsonResponse(file_name,safe=False)
-
-
-
 
 
 # # Create your views here.
@@ -144,7 +245,6 @@ def Appointment(request,id=0):
 #             form.save()
 
 
-
 # def patientlist(request):
 #     patients_list = Patient.objects.all()
 #     context = {
@@ -172,7 +272,7 @@ def Appointment(request,id=0):
 
 #     if serializer.is_valid():
 #         serializer.save()
-        
+
 #     return Response(serializer.data)
 
 

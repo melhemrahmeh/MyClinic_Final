@@ -1,52 +1,62 @@
-import MaterialTable from "material-table";
+import React, { useEffect, useState } from "react";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+
+import axios from "axios";
+
+function createData(firstName, lastName, email, birthDate, PhoneNumber) {
+  return { firstName, lastName, email, birthDate, PhoneNumber};
+}
+
+const rows = [];
 
 export default function PatientTable() {
+  const [data, setData] = useState([]);
 
-    const data = [
-        { name: "John", email: "john@gmail.com", age: 12, gender: "Male" },
-        { name: "Bren", email: "bren@gmail.com", age: 24, gender: "Male" },
-        { name: "Marry", email: "marry@gmail.com", age: 18, gender: "Female" },
-        { name: "Shohail", email: "shohail@gmail.com", age: 25, gender: "Male" },
-        { name: "Aseka", email: "aseka@gmail.com", age: 19, gender: "Female" },
-        { name: "Meuko", email: "meuko@gmail.com", age: 12, gender: "Female" },
-    ];
-    const columns = [
-        {
-            title: "Name",
-            field: "name",
-        },
-        {
-            title: "Email",
-            field: "email",
-        },
-        {
-            title: "Age",
-            field: "age",
-        },
-        {
-            title: "Gender",
-            field: "gender",
-        },
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/patients/")
+      .then((res) => {
+        setData(res.data);
+        console.log("Result:", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-    ];
-    return (
-        <MaterialTable
-            title="My Patients"
-            data={data}
-            columns={columns}
-            options={{ search: true, paging: false, filtering: true, exportButton: true }}
-            actions={[
-                {
-                    icon: 'save',
-                    tooltip: 'Save User',
-                    onClick: (event, rowData) => alert("You saved " + rowData.name)
-                },
-                {
-                    icon: 'delete',
-                    tooltip: 'Delete User',
-                    onClick: (event, rowData) => alert("You want to delete " + rowData.name)
-                }
-            ]}
-        />
-    );
+  return (
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table" stickyHeader>
+        <TableHead>
+          <TableRow>
+            <TableCell>FirstName</TableCell>
+            <TableCell align="right">LastName</TableCell>
+            <TableCell align="right">Email</TableCell>
+            <TableCell align="right">Phone</TableCell>
+            <TableCell align="right">Age</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((row) => (
+            <TableRow key={row.id}>
+              <TableCell component="th" scope="row">
+                {row.firstName}
+              </TableCell>
+              <TableCell align="right">{row.lastName}</TableCell>
+              <TableCell align="right">{row.email}</TableCell>
+              <TableCell align="right">{row.PhoneNumber}</TableCell>
+              <TableCell align="right">{row.birthDate}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 }
+

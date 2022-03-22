@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,19 +25,12 @@ SECRET_KEY = 'django-insecure-i(&a&7^n%cpm0ttn8r_0ue8v7en(0zjtxr(c2a^k!61wbo2fwg
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-CORS_ORIGIN_ALLOW_ALL = True
-
-
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,10 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'doctordashboard',
     'rest_framework',
+    'corsheaders',
+]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
 ]
 
 MIDDLEWARE = [
-    "django.middleware.common.CommonMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -58,11 +58,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-CORS_ALLOWED_ORIGINS = [
-
-    "http://localhost:8080",
-]
 
 ROOT_URLCONF = 'prototype.urls'
 
@@ -71,7 +68,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'clinicfront/build')
-            ],
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +98,8 @@ DATABASES = {
     }
 }
 
+# CORS_ORIGIN_WHITELIST = ['*']
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -153,7 +152,9 @@ REST_FRAMEWORK = {
     ]
 }
 
-AUTH_USER_MODEL ='doctordashboard.User'
+# ROOT_URLCONF =  'doctordashboard.urls'
+
+# AUTH_USER_MODEL = 'doctordashboard.User'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'clinicfront/build/static')
