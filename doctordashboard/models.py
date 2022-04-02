@@ -4,76 +4,99 @@ from django.contrib.auth.models import AbstractUser
 
 
 
-# #How to make Keys in specific key
+# How to make Keys in specific key
 
 # class Clinic(models.Model):
    
 #     clinicName = models.CharField(max_length=100, blank=True, null=True)
-#     _id = models.AutoField(primary_key=True, editable=False, default=0)
+#     _id = models.AutoField(primary_key=True, editable=False, null=False)
 
 
 # #select 
-# class Role(models.Model):
+class Role(models.Model):
     
-#     ADMINISTRATOR =  'Administartor'
-#     DENTIST_ASSISTANT =  'Dentist_Assistant'
-#     NURSE =  'Nurse'
-#     SECRETARY = 'Secretary'
+    ADMINISTRATOR =  'Administartor'
+    DENTIST_ASSISTANT =  'Dentist_Assistant'
+    NURSE =  'Nurse'
+    SECRETARY = 'Secretary'
 
-#     role_choices =  [
-#         (ADMINISTRATOR, 'Administartor'),
-#         (DENTIST_ASSISTANT, 'Dentist_Assistant'),
-#         (NURSE, 'Nurse'),
-#         (SECRETARY, 'Secretary'),
-#     ]
+    role_choices =  [
+        (ADMINISTRATOR, 'Administartor'),
+        (DENTIST_ASSISTANT, 'Dentist_Assistant'),
+        (NURSE, 'Nurse'),
+        (SECRETARY, 'Secretary'),
+    ]
     
-#     title =  models.CharField(max_length = 100 , choices=role_choices)
-#     _id = models.AutoField(primary_key=True, editable=False, default=0)
-
-
-# class User(AbstractUser):
-#     clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    title =  models.CharField(max_length = 100 , choices=role_choices, null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
     
-#     role =  models.ForeignKey(Role, on_delete = models.CASCADE)
-#     first_name = models.CharField(max_length = 50)
-#     last_name = models.CharField(max_length = 50)
-#     MALE =  'M'
-#     FEMALE =  'F'
-#     OTHER =  'O'
-#     gender_choices =  [
-#         (MALE, 'Male'),
-#         (FEMALE, 'Female'),
-#         (OTHER, 'Other'),
-#     ]
-#     gender =  models.CharField(max_length= 2, choices= gender_choices, default= OTHER)
-#     email =  models.EmailField()
-#     phone_number =  models.CharField(max_length=8)
-#     _id = models.AutoField(primary_key=True, editable=False, default=0)
+    def __str__(self):
+        return self.title
+    
+    
 
 
-# class Room(models.Model):
-#     clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
-#     title = models.CharField(max_length = 100)
-#     _id = models.AutoField(primary_key=True, editable=False, default=0)
+class User(AbstractUser):
+    # clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    # is_doctor =  ...
+    # is_patient = ...
+    # is_secretery = ...
+    # is_nurse =  ...
+    # is_administrator = ...
+    
+    role =  models.ForeignKey(Role, on_delete = models.CASCADE, null=True)
+    first_name = models.CharField(max_length = 50, null=True)
+    last_name = models.CharField(max_length = 50,null=True)
+    MALE =  'M'
+    FEMALE =  'F'
+    OTHER =  'O'
+    gender_choices =  [
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (OTHER, 'Other'),
+    ]
+    gender =  models.CharField(max_length= 2, choices= gender_choices, default= OTHER, null=True)
+    email =  models.EmailField(null=True)
+    phone_number =  models.CharField(max_length=8, null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    def __str__(self):
+        return self.email
+    
+    
 
 
-# class Operation(models.Model):
-#     ROOTCANAL = 'RC'
-#     TOOTHEXTRACTIONS = 'TE'
-#     PULPOTOMY = 'PU'
-#     BRIDGE = 'BR'
-#     SURGERIESTYPES = [
-#         (ROOTCANAL, 'Root Canal'),
-#         (TOOTHEXTRACTIONS, 'Tooth Extraction'),
-#         (PULPOTOMY, 'Pulpotomy'),
-#         (BRIDGE, 'Bridge'),
-#     ]
-#     # serach the clinc by operations it's provide
-#     # and more for surgerytypes we might add a check list on the dentist sign up  the list of operations he/ she does
-#     clinic =  models.ManyToManyField(Clinic)
-#     title = models.CharField(max_length=2, blank= True,  choices= SURGERIESTYPES)
-#     cost =  models.DecimalField(max_digits=10, decimal_places=2, default=0)
-#     _id = models.AutoField(primary_key=True, editable=False, default=0)
+class Room(models.Model):
+    # room number m7al title
+    # clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    room_name = models.CharField(max_length = 100, null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    def __str__(self):
+        return self.room_name
+    
+    
+
+
+class Operation(models.Model):
+    ROOTCANAL = 'RC'
+    TOOTHEXTRACTIONS = 'TE'
+    PULPOTOMY = 'PU'
+    BRIDGE = 'BR'
+    SURGERIESTYPES = [
+        (ROOTCANAL, 'Root Canal'),
+        (TOOTHEXTRACTIONS, 'Tooth Extraction'),
+        (PULPOTOMY, 'Pulpotomy'),
+        (BRIDGE, 'Bridge'),
+    ]
+    # serach the clinc by operations it's provide
+    # and more for surgerytypes we might add a check list on the dentist sign up  the list of operations he/ she does
+    # clinic =  models.ManyToManyField(Clinic)
+    title = models.CharField(max_length=2, blank= True,  choices= SURGERIESTYPES, null = True)
+    cost =  models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    def __str__(self):
+        return self.title
+    
+    
 
 
 
@@ -104,26 +127,33 @@ class Patient(models.Model):
     # E_Relationship = models.CharField(max_length = 150, default='father')
     E_contactNumber = models.CharField(max_length=100, blank=True, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
-
+    
     def __str__(self):
-        return self.firstName and self.lastName
-    
+        return self.email
     
     
     
 
-
-# class Appointment(models.Model):
+class Appointment(models.Model):
     
-#     #Think more about the relations
-#     #give each operation an estimated time both the dentist and patient know the time and benefit it
-#     patient =  models.OneToOneField(Patient, on_delete = models.CASCADE)
-#     createdby =  models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
-#     room = models.OneToOneField(Room, on_delete = models.CASCADE)
-#     doctor = models.OneToOneField(User, on_delete =  models.CASCADE)
-#     datetime = models.DateTimeField(blank=True, default=datetime.date.today, null=True)
-#     duration =  models.DurationField()
-#     reason =  models.CharField(max_length=100)
+    #Think more about the relations
+    #give each operation an estimated time both the dentist and patient know the time and benefit it
+    patient =  models.OneToOneField(Patient, on_delete = models.CASCADE, null=True)
+    createdby =  models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
+    room = models.OneToOneField(Room, on_delete = models.CASCADE, default="Operation", null = True)
+    doctor = models.OneToOneField(User, on_delete =  models.CASCADE, default="Moh", null = True)
+    date = models.DateField(auto_now=False, null=True)
+    time =  models.TimeField(auto_now=False, null=True)
+    # duration =  models.DurationField()
+    operation = models.OneToOneField(Operation, on_delete= models.CASCADE, default="Tooth Extraction", null=True)
+    # reason =  models.CharField(max_length=100, null=True)
+    _id = models.AutoField(primary_key=True, editable=False)
+    
+    def __str__(self):
+        return str(self.patient)
+    
+    
+
     
 
 # class Visit(models.Model):
@@ -144,7 +174,7 @@ class Patient(models.Model):
 #     title =  models.CharField(max_length=100)
     
 
-# paymentjournal link it to the visit
+# # paymentjournal link it to the visit
 # class PaymentJournal(models.Model):
 #     patient =  models.OneToOneField(Patient, on_delete=models.CASCADE)
 #     journalentrytype =  models.OneToOneField(JournalEntryType, on_delete =  models.CASCADE)

@@ -154,8 +154,10 @@ REST_FRAMEWORK = {
 
 # ROOT_URLCONF =  'doctordashboard.urls'
 
-# AUTH_USER_MODEL = 'doctordashboard.User'
+AUTH_USER_MODEL = 'doctordashboard.User'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'clinicfront/build/static')
 ]
+
+

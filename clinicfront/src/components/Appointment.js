@@ -1,6 +1,51 @@
 import { Link } from 'react-router-dom'
+import axios from "axios";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Appointment() {
+
+
+    
+  let navigate = useNavigate();
+  const [state, setState] = useState({});
+  const [firstName, setfirstName] = useState(null);
+  const [lastName, setlastName] = useState(null);
+  const [email, setemail] = useState(null);
+  const [operation, setoperation] = useState(null);
+  const [date, setdate] = useState(null);
+  const [time, settime] = useState(null);
+ 
+
+    // const handleChange = (e) => {
+    //   setState({ ...state, [e.target.name]: e.target.value });
+    // };
+
+  const addNewAppointment = async () => {
+
+    const form = {
+      firstName,
+      lastName,
+      email,
+      operation,
+      date,
+      time
+    };
+    console.log(form);
+    await axios({
+      method: "POST",
+      url: "http://127.0.0.1:8000/api/appointments/create/",
+      data: form,
+    })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   
   return (
     <div className="container-fluid bg-primary my-5 py-5">
@@ -25,34 +70,35 @@ export default function Appointment() {
               <form>
                 <div className="row g-3">
                   <div className="col-12 col-sm-6">
-                    <input type="text" className="form-control bg-light border-0" placeholder="First Name" style={{ height: '55px' }} />
+                    <input type="text" className="form-control bg-light border-0" placeholder="First Name" value = {firstName} onChange={(e) => setfirstName(e.target.value)} style={{ height: '55px' }} />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <input type="text" className="form-control bg-light border-0" placeholder="Last Name" style={{ height: '55px' }} />
+                    <input type="text" className="form-control bg-light border-0" placeholder="Last Name" value = {lastName} onChange={(e) => setlastName(e.target.value)} style={{ height: '55px' }} />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <input type="email" className="form-control bg-light border-0" placeholder="Your Email" style={{ height: '55px' }} />
+                    <input type="email" className="form-control bg-light border-0" placeholder="Your Email" value = {email} onChange={(e) => setemail(e.target.value)} style={{ height: '55px' }} />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <select className="form-select bg-light border-0" style={{ height: '55px' }}>
+                    <select className="form-select bg-light border-0" value = {operation} onChange={(e) => setoperation(e.target.value)} style={{ height: '55px' }}>
                       <option selected>Select Operation</option>
-                      <option value={1}>Operation 1</option>
-                      <option value={2}>Operation 2</option>
-                      <option value={3}>Operation 3</option>
+                      <option value={1}>Root Canal</option>
+                      <option value={2}>Tooth Extraction</option>
+                      <option value={3}>Pulpotomy</option>
+                      <option value={4}>Bridge</option>
                     </select>
                   </div>
                   <div className="col-12 col-sm-6">
                     <div className="date" id="date" data-target-input="nearest">
-                      <input type="date" value="2017-06-01" className="form-control bg-light border-0 datetimepicker-input" data-target="#date" data-toggle="datetimepicker" style={{ height: '55px' }} />
+                      <input type="date" className="form-control bg-light border-0 datetimepicker-input" data-target="#date" data-toggle="datetimepicker" value = {date} onChange={(e) => setdate(e.target.value)} style={{ height: '55px' }} />
                     </div>
                   </div>
                   <div className="col-12 col-sm-6">
                     <div className="time" id="time" data-target-input="nearest">
-                      <input type="time" id="appt" name="appt" className="form-control bg-light border-0 datetimepicker-input" data-target="#time" data-toggle="datetimepicker" style={{ height: '55px' }} value="09:00" />
+                      <input type="time" id="appt" name="appt" className="form-control bg-light border-0 datetimepicker-input" data-target="#time" data-toggle="datetimepicker" value = {time} onChange={(e) => settime(e.target.value)} style={{ height: '55px' }} value="09:00" />
                     </div>
                   </div>
                   <div className="col-12">
-                    <button className="btn btn-primary w-100 py-3" type="submit">Book</button>
+                    <button className="btn btn-primary w-100 py-3" type="submit" onClick={addNewAppointment} >Book</button>
                   </div>
                 </div>
               </form>

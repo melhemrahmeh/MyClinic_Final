@@ -26,11 +26,12 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html')),
-    path('api/patients/', include('doctordashboard.urls')),
-    # path('api/', include(router.urls))
-]
+    # path('', TemplateView.as_view(template_name='index.html')),
+    path('api/patients/', include('doctordashboard.urls.patient_urls')),
+    path('api/appointments/', include("doctordashboard.urls.appointment_urls")),
+    path('api/operations/', include("doctordashboard.urls.operation_urls")),
+    path('api/rooms/', include("doctordashboard.urls.room_urls")),
+    # path('api/employees/', include("doctordashboard.urls.employee_urls")),
 
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

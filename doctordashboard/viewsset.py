@@ -9,12 +9,12 @@ class PatientViewSet(viewsets.ModelViewSet):
 
 
 # class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+#     queryset = models.User.objects.all()
+#     serializer_class = serializers.UserSerializer
 
-# class AppointmentViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Appointment.objects.all()
-#     serializer_class = serializers.AppointmentSerializer
+class AppointmentViewSet(viewsets.ModelViewSet):
+    queryset =  models.Appointment.objects.all()
+    serializer_class = serializers.AppointmentSerializer
 
 # class VisitViewSet(viewsets.ModelViewSet):
 #     queryset =  models.Visit.objects.all()
@@ -32,11 +32,11 @@ class PatientViewSet(viewsets.ModelViewSet):
 #     queryset =  models.Role.objects.all()
 #     serializer_class = serializers.RoleSerializer
     
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset =  models.User.objects.all()
-#     serializer_class = serializers.UserSerializer
+class OperationViewSet(viewsets.ModelViewSet):
+    queryset =  models.Operation.objects.all()
+    serializer_class = serializers.OperationSerializer
     
-# class ClinicViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Clinic.objects.all()
-#     serializer_class = serializers.ClinicSerialize
+class RoomViewSet(viewsets.ModelViewSet):
+    queryset =  models.Room.objects.all()
+    serializer_class = serializers.RoomSerializer
     
