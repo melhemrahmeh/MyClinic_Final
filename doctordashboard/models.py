@@ -1,5 +1,6 @@
 from django.db import models
-import datetime
+from datetime import datetime    
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 
 
@@ -12,6 +13,23 @@ from django.contrib.auth.models import AbstractUser
 #     _id = models.AutoField(primary_key=True, editable=False, null=False)
 
 
+
+class User(AbstractUser):
+    # clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    # is_doctor =  ...
+    # is_patient = ...
+    # is_secretery = ...
+    # is_nurse =  ...
+    # is_administrator = ...
+    
+    is_patient =  models.BooleanField('patient status', default=False)
+    is_worker =  models.BooleanField('worker status', default=False)
+    
+    def __str__(self):
+        return self.username
+    
+    
+    
 # #select 
 class Role(models.Model):
     
@@ -26,25 +44,8 @@ class Role(models.Model):
         (NURSE, 'Nurse'),
         (SECRETARY, 'Secretary'),
     ]
-    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     title =  models.CharField(max_length = 100 , choices=role_choices, null=True)
-    _id = models.AutoField(primary_key=True, editable=False)
-    
-    def __str__(self):
-        return self.title
-    
-    
-
-
-class User(AbstractUser):
-    # clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
-    # is_doctor =  ...
-    # is_patient = ...
-    # is_secretery = ...
-    # is_nurse =  ...
-    # is_administrator = ...
-    
-    role =  models.ForeignKey(Role, on_delete = models.CASCADE, null=True)
     first_name = models.CharField(max_length = 50, null=True)
     last_name = models.CharField(max_length = 50,null=True)
     MALE =  'M'
@@ -59,8 +60,9 @@ class User(AbstractUser):
     email =  models.EmailField(null=True)
     phone_number =  models.CharField(max_length=8, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
+    
     def __str__(self):
-        return self.email
+        return self.title
     
     
 
@@ -99,15 +101,15 @@ class Operation(models.Model):
     
 
 
-
-
 class Patient(models.Model):
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
+   
+    user        = models.OneToOneField(User, on_delete=models.CASCADE)
+    firstName   = models.CharField(max_length=100, blank=True, null=True)
+    lastName    = models.CharField(max_length=100, blank=True, null=True)
     PhoneNumber = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    birthDate = models.DateField(blank=True, null=True)
-    address =  models.CharField(max_length = 50)
+    email       = models.EmailField(blank=True, null=True)
+    birthDate   = models.DateField(blank=True, null=True)
+    address     = models.CharField(max_length = 50)
     #if yes fill 
     
     gender_choices =  [
@@ -116,11 +118,11 @@ class Patient(models.Model):
         ("FEMALE", "Female"),
         ("OTHER", "Other"),
     ]
-    gender =  models.CharField(max_length= 20, choices= gender_choices, default= "OTHER")
-    medicattions = models.BooleanField(default=False, null=  True)
-    med_text =  models.TextField(blank =  True, null =  True)
-    allergies = models.BooleanField(default=False, null= True)
-    allergies_text =  models.TextField(blank =  True, null=True)
+    gender         = models.CharField(max_length= 20, choices= gender_choices, default= "OTHER")
+    medicattions   = models.BooleanField(default=False, null=  True)
+    med_text       = models.TextField(blank =  True, null =  True)
+    allergies      = models.BooleanField(default=False, null= True)
+    allergies_text = models.TextField(blank =  True, null=True)
     #Emergency
     E_firstName = models.CharField(max_length=100, blank=True, null=True)
     E_lastName = models.CharField(max_length=100, blank=True, null=True) 
@@ -129,7 +131,7 @@ class Patient(models.Model):
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return self.email
+        return self.PhoneNumber
     
     
     
@@ -138,12 +140,12 @@ class Appointment(models.Model):
     
     #Think more about the relations
     #give each operation an estimated time both the dentist and patient know the time and benefit it
-    patient =  models.OneToOneField(Patient, on_delete = models.CASCADE, null=True)
-    createdby =  models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
-    room = models.OneToOneField(Room, on_delete = models.CASCADE, default="Operation", null = True)
-    doctor = models.OneToOneField(User, on_delete =  models.CASCADE, default="Moh", null = True)
-    date = models.DateField(auto_now=False, null=True)
-    time =  models.TimeField(auto_now=False, null=True)
+    patient   = models.OneToOneField(Patient, on_delete = models.CASCADE, null=True)
+    createdby = models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
+    room      = models.OneToOneField(Room, on_delete = models.CASCADE, default="Operation", null = True)
+    doctor    = models.OneToOneField(User, on_delete =  models.CASCADE, default="Moh", null = True)
+    date      = models.DateField(auto_now=False, null=True)
+    time      = models.TimeField(auto_now=False, null=True)
     # duration =  models.DurationField()
     operation = models.OneToOneField(Operation, on_delete= models.CASCADE, default="Tooth Extraction", null=True)
     # reason =  models.CharField(max_length=100, null=True)
@@ -154,7 +156,25 @@ class Appointment(models.Model):
     
     
 
+class AfterVisitSummary(models.Model):
     
+    patient = models.OneToOneField(Patient, on_delete = models.CASCADE)
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    operation = models.ManyToManyField(Operation,  default="Tooth Extraction")
+    
+    todayvisit = models.DateField(default=datetime.now)
+    nextvisit = models.DateField(default=datetime.now)
+    time =  models.TimeField(default=timezone.now)
+    med_text =  models.TextField(blank=True, null=True)
+    image = models.ImageField(null=True, blank=True,default='/placeholder.png')
+    _id = models.AutoField(primary_key=True, editable=False)
+
+    def __str__(self):
+        return str(self.patient)
+    
+
 
 # class Visit(models.Model):
 #     patient = models.OneToOneField(Patient, on_delete = models.CASCADE)

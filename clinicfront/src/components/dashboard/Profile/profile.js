@@ -1,0 +1,64 @@
+import React from 'react'
+
+export default function profile() {
+  return (
+    <div className="wrapper bg-white mt-sm-5">
+      <h4 className="pb-4 border-bottom">Account settings</h4>
+      <div className="d-flex align-items-start py-3 border-bottom"> <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" className="img" alt="" />
+        <div className="pl-sm-4 pl-2" id="img-section"> <b>Profile Photo</b>
+          <p>Accepted file type .png. Less than 1MB</p>
+          <input type="file" id="myfile" name="myfile" className="form-control bg-light border-0" unique />
+        </div>
+      </div>
+      <div className="py-2">
+        <div className="row py-2">
+          <div className="col-md-6"> <label htmlFor="firstname">First Name</label> <input type="text" className="bg-light form-control" placeholder="Steve" /> </div>
+          <div className="col-md-6 pt-md-0 pt-3"> <label htmlFor="lastname">Last Name</label> <input type="text" className="bg-light form-control" placeholder="Smith" /> </div>
+        </div>
+        <div className="row py-2">
+          <div className="col-md-6"> <label htmlFor="email">Email Address</label> <input type="text" className="bg-light form-control" placeholder="steve_@email.com" /> </div>
+          <div className="col-md-6 pt-md-0 pt-3"> <label htmlFor="phone">Phone Number</label> <input type="tel" className="bg-light form-control" placeholder="+1 213-548-6015" /> </div>
+        </div>
+
+        <div className="row py-2">
+          <div className="col-md-6"> <label htmlFor="email">Education</label> <input type="text" className="bg-light form-control" placeholder="degree" /> </div>
+          <div className="col-md-6 pt-md-0 pt-3"> <label htmlFor="phone">University</label> <input type="name" className="bg-light form-control" placeholder="university name" /> </div>
+        </div>
+
+
+        <div className="col-12 col-sm-6">
+          <label for="date"> Country Type </label>
+          <select className="form-select bg-light border-0" style={{ height: '55px' }}>
+            <option value="india" selected>India</option>
+            <option value="usa">USA</option>
+            <option value="uk">UK</option>
+            <option value="other">  Other </option>
+          </select>
+        </div>
+
+        <div className="col-12 col-sm-6">
+          <label for="date"> Language Type</label>
+          <select className="form-select bg-light border-0" style={{ height: '55px' }}>
+            <option selected>Language</option>
+            <option value="english" selected>English</option>
+            <option value="english_us">English (United States)</option>
+            <option value="enguk">English UK</option>
+            <option value="arab">Arabic</option>
+          </select>
+        </div>
+        <div >
+          <br />
+          <label for="myfile"> Please Upload Your Resume</label>
+          <input type="file" id="myfile" name="myfile" className="form-control bg-light border-0" multiple />
+        </div>
+      </div>
+      <div className="py-3 pb-4 border-bottom"> <button className="btn btn-primary mr-3">Save Changes</button> <button className="btn border button">Cancel</button> </div>
+      <div className="d-sm-flex align-items-center pt-3" id="deactivate">
+        <div> <b>Deactivate your account</b>
+          <p>Details about your company account and password</p>
+        </div>
+        <div className="ml-auto"> <button className="btn danger">Deactivate</button> </div>
+      </div>
+    </div>
+  );
+}

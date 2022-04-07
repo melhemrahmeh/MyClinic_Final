@@ -97,8 +97,9 @@
 }
 
 .hero-header {
-    background: url(../img/mainpageimage.jpg) top right no-repeat;
+    background: url(../img/dddd.jpg) top right no-repeat;
     background-size: cover;
+    background-position: center; /* Center the image */
 }
 
 .service-item {

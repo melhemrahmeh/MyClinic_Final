@@ -1,6 +1,10 @@
+# from rest_auth.registration.serializers import RegisterSerializer
+from allauth.account.adapter import get_adapter
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from doctordashboard.models import Patient, Appointment, Operation, Room
+from doctordashboard.models import Patient, Appointment, Operation, Room, AfterVisitSummary, User
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,50 +15,53 @@ class PatientSerializer(serializers.ModelSerializer):
     # def create(self, validated_data):
     #     return Patient.objects.create(validated_data)
     
+    
+class AfterVisitSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AfterVisitSummary
+        fields = '__all__'
+        
+        
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('email', 'username', 'password', 'is_doctor', 'is_patient', 'is_nurse', 'is_secretary')
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'is_worker', 'is_patient')
 
-# class CustomRegisterSerializer(RegisterSerializer):
-#     is_patient = serializers.BooleanField()
-#     is_doctor = serializers.BooleanField()
-#     is_nurse = serializers.BooleanField()
-#     is_secretary = serializers.BooleanField()
-
-
-    # class Meta:
-    #     model = User
-    #     fields = ('email', 'username', 'password', 'is_doctor', 'is_patient', 'is_nurse', 'is_secretary')
-
-    # def get_cleaned_data(self):
-    #     return {
-    #         'username': self.validated_data.get('username', ''),
-    #         'password1': self.validated_data.get('password1', ''),
-    #         'password2': self.validated_data.get('password2', ''),
-    #         'email': self.validated_data.get('email', ''),
-    #         'is_doctor': self.validated_data.get('is_doctor', ''),
-    #         'is_patient': self.validated_data.get('is_patient', ''),
-    #         'is_nurse': self.validated_data.get('is_nurse', ''),
-    #         'is_secretary': self.validated_data.get('is_secretary', '')
-    #     }
-
-    # def save(self, request):
-    #     adapter = get_adapter()
-    #     user = adapter.new_user(request)
-    #     self.cleaned_data = self.get_cleaned_data()
-    #     user.is_patient = self.cleaned_data.get('is_patient')
-    #     user.is_doctor = self.cleaned_data.get('is_doctor')
-    #     user.is_nurse= self.cleaned_data.get('is_nurse')
-    #     user.is_secretary = self.cleaned_data.get('is_secretary')
-
-    #     user.save()
-    #     adapter.save_user(request, user, self)
-    #     return user
+class RegisterSerializer(serializers.ModelSerializer):
+    is_patient = serializers.BooleanField()
+    is_worker = serializers.BooleanField()
+   
 
 
-# class TokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'is_worker', 'is_patient')
+
+    def get_cleaned_data(self):
+        return {
+            'username': self.validated_data.get('username', ''),
+            'password1': self.validated_data.get('password1', ''),
+            'password2': self.validated_data.get('password2', ''),
+            'email': self.validated_data.get('email', ''),
+            'is_patient': self.validated_data.get('is_worker', ''),
+            'is_worker': self.validated_data.get('is_patient','')
+        }
+
+    def save(self, request):
+        adapter = get_adapter()
+        user = adapter.new_user(request)
+        self.cleaned_data = self.get_cleaned_data()
+        user.is_worker = self.cleaned_data.get('is_worker')
+        user.is_patient = self.cleaned_data.get('is_patient')
+       
+
+        user.save()
+        adapter.save_user(request, user, self)
+        return user
+
+
+# class UserSerializerWithToken(serializers.ModelSerializer):
 #     user_type = serializers.SerializerMethodField()
 
 #     class Meta:
@@ -72,6 +79,18 @@ class PatientSerializer(serializers.ModelSerializer):
 #             'is_teacher': is_teacher
 #         }
       
+      
+
+class UserSerializerWithToken(UserSerializer):
+    token = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id',  'email', 'username', 'password', 'is_worker', 'is_patient', 'token']
+
+    def get_token(self, obj):
+        token = RefreshToken.for_user(obj)
+        return str(token.access_token)
         
         
 class AppointmentSerializer(serializers.ModelSerializer):

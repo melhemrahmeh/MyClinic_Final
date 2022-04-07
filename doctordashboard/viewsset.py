@@ -1,16 +1,23 @@
 from rest_framework import viewsets
-from . import models
+from . import models 
 from . import serializers
 
 
 class PatientViewSet(viewsets.ModelViewSet):
     queryset =  models.Patient.objects.all()
     serializer_class = serializers.PatientSerializer
+    
+
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class =serializers.UserSerializer
+    queryset = models.User.objects.all()
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = models.User.objects.all()
-#     serializer_class = serializers.UserSerializer
+class AfterVisitViewSet(viewsets.ModelViewSet):
+    queryset =  models.AfterVisitSummary.objects.all()
+    serializer_class = serializers.AfterVisitSerializer
+
+
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset =  models.Appointment.objects.all()

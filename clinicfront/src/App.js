@@ -1,42 +1,58 @@
-import AboutUs from "./components/Pages/AboutUs.js"
-import MainPage from "./components/Pages/MainPage.js"
-import Schedule from "./components/schedule/Schedule.js"
-import BookAppointment from "./components/Pages/BookAppointment.js"
-import OperationsPages from "./components/Pages/OperationsPage.js"
-import AfterVisitPage from "./components/Pages/AfterVisitPage.js"
-import AddEmployeePage from "./components/Pages/AddEmployeePage.js"
-import AddPatientPage from "./components/Pages/AddPatientPage.js"
-import TeamPage from "./components/Pages/TeamPage.js"
-import Login from "./components/Pages/Login.js"
-import Join from "./components/Pages/Join.js"
-import Material_Table from "./components/Tables/Material_Table.js"
-import PatientTable from "./components/Tables/PatientTable.js"
-import Main from "./Dashboard/Main.js"
-
-
-
+import React from 'react'
 import { Routes, Route } from "react-router-dom"
-import { useEffect } from "react"
+
+// importing from the dashboard pages
+import MyAppointments from "./components/Pages/DashboardPages/MyAppointmentsPage.js"
+import AfterVisitPage from "./components/Pages/DashboardPages/AfterVisitPage.js"
+import AddEmployeePage from "./components/Pages/DashboardPages/AddEmployeePage.js"
+import AddPatientPage from "./components/Pages/DashboardPages/AddPatientPage.js"
+import MainDash from "./components/Pages/DashboardPages/MainDash.js"
+import EmplTable from "./components/Pages/DashboardPages/MyEmpl.js"
+import PatientTable from "./components/Pages/DashboardPages/MyPatients.js"
+import Settings from  "./components/Pages/DashboardPages/Settings.js"
+
+import AddOperationPage from "./components/Pages/DashboardPages/AddOperationsPage.js"
+import OperationsTable from "./components/Pages/DashboardPages/MyOperations.js"
+// importing from my clinic pages
+import AboutUs from "./components/Pages/MyClinicPages/AboutUs.js"
+import TeamPage from "./components/Pages/MyClinicPages/TeamPage.js"
+import Login from "./components/Pages/MyClinicPages/Login.js"
+import BookAppointment from "./components/Pages/MyClinicPages/BookAppointment.js"
+import OperationsPages from "./components/Pages/MyClinicPages/OperationsPage.js"
+import JoinPatient from "./components/Pages/MyClinicPages/JoinPatient.js"
+import JoinWorker from "./components/Pages/MyClinicPages/JoinWorker.js"
+import JoinClinic from "./components/Pages/MyClinicPages/JoinDentist.js"
+import MainPage from "./components/Pages/MyClinicPages/MainPage.js"
+import UserProfilePage from './components/Pages/DashboardPages/UserProfilePage.js'
+import MeetTheTeamPage from "./components/Pages/MyClinicPages/MeetTheTeamPage.js"
 
 export default function App() {
-
   return (
     <div>
       <Routes>
         <Route index path="" element={<MainPage />} />
         <Route path="about/" element={<AboutUs />} />
-        <Route path="schedule/" element={<Schedule />} />
         <Route path="bookappointment/" element={<BookAppointment />} />
         <Route path="operations/" element={<OperationsPages />} />
+        <Route path="team/" element={<TeamPage />} />
+        <Route path="login/" element={<Login />} />
+        <Route path="joinpatient/" element={<JoinPatient />} />
+        <Route path="joinworker/" element={<JoinWorker />} />
+        <Route path="joinclinic/" element={<JoinClinic />} />
+        <Route path="ourteam/" element={<MeetTheTeamPage />} />
+
+        
         <Route path="aftervisit/" element={<AfterVisitPage />} />
         <Route path="addemployee/" element={<AddEmployeePage />} />
         <Route path="addpatient/" element={<AddPatientPage />} />
-        <Route path="team/" element={<TeamPage />} />
-        <Route path="login/" element={<Login />} />
-        <Route path="join/" element={<Join />} />
-        <Route path="myemployees/" element={<Material_Table />} />
+        <Route path="myemployees/" element={<EmplTable />} />
         <Route path="mypatients/" element={<PatientTable />} />
-        <Route path="admin/" element={<Main />} />
+        <Route path="dashboard/" element={<MainDash />} />
+        <Route path="myappointments/" element={<MyAppointments />} />
+        <Route path="profile/" element={<Settings />} />
+        <Route path="user/" element={<UserProfilePage />} />
+        <Route path="addoperation/" element={<AddOperationPage />} />
+        <Route path="myoperations/" element={<OperationsTable />} />
       </Routes>
     </div>
   );
