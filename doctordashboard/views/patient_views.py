@@ -11,11 +11,13 @@ from django.http.response import JsonResponse
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 
 @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+
 def getPatients(request):
     patients = Patient.objects.all()
     patient_serializer = PatientSerializer(patients, many=True)
@@ -23,12 +25,16 @@ def getPatients(request):
 
 
 @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+
 def getPatient(request, pk):
     patient = Patient.objects.get(_id=pk)
     serializer = PatientSerializer(patient, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+
 def postPatient(request):
     # permission_classes = [IsAdminUser]
     patient = JSONParser().parse(request)
@@ -39,6 +45,8 @@ def postPatient(request):
     return JsonResponse("Failed to Add.", safe=False)
 
 @api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+
 def putPatient(request, pk):
     # permission_classes = [IsAdminUser]
     patient = JSONParser().parse(request)
@@ -50,6 +58,8 @@ def putPatient(request, pk):
     return JsonResponse("Failed to Update.", safe=False)
    
 @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+
 def deletePatient(request, pk):
     # permission_classes = [IsAdminUser]
     patient = Patient.objects.get(_id=pk)

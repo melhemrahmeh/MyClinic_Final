@@ -44,7 +44,7 @@ class Role(models.Model):
         (NURSE, 'Nurse'),
         (SECRETARY, 'Secretary'),
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title =  models.CharField(max_length = 100 , choices=role_choices, null=True)
     first_name = models.CharField(max_length = 50, null=True)
     last_name = models.CharField(max_length = 50,null=True)
@@ -79,22 +79,10 @@ class Room(models.Model):
 
 
 class Operation(models.Model):
-    ROOTCANAL = 'RC'
-    TOOTHEXTRACTIONS = 'TE'
-    PULPOTOMY = 'PU'
-    BRIDGE = 'BR'
-    SURGERIESTYPES = [
-        (ROOTCANAL, 'Root Canal'),
-        (TOOTHEXTRACTIONS, 'Tooth Extraction'),
-        (PULPOTOMY, 'Pulpotomy'),
-        (BRIDGE, 'Bridge'),
-    ]
-    # serach the clinc by operations it's provide
-    # and more for surgerytypes we might add a check list on the dentist sign up  the list of operations he/ she does
-    # clinic =  models.ManyToManyField(Clinic)
-    title = models.CharField(max_length=2, blank= True,  choices= SURGERIESTYPES, null = True)
+    title = models.CharField(max_length = 200 ,blank= True, null = True)
     cost =  models.DecimalField(max_digits=10, decimal_places=2, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
+    description =  models.CharField(max_length = 200, blank=True, null= True)
     def __str__(self):
         return self.title
     
@@ -103,7 +91,7 @@ class Operation(models.Model):
 
 class Patient(models.Model):
    
-    user        = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     firstName   = models.CharField(max_length=100, blank=True, null=True)
     lastName    = models.CharField(max_length=100, blank=True, null=True)
     PhoneNumber = models.CharField(max_length=100, blank=True, null=True)

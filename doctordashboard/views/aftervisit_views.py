@@ -13,9 +13,6 @@ from django.core.files.storage import default_storage
 from rest_framework.permissions import IsAdminUser
 
 
-
-
-
 @api_view(['GET'])
 def getAfterVisits(request):
     visits = AfterVisitSummary.objects.all()

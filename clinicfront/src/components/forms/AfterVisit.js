@@ -1,6 +1,76 @@
-import React  from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function AfterVisit() {
+    
+  let navigate = useNavigate();
+  const [state, setState] = useState({});
+  const [firstName, setfirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [PhoneNumber, setPhoneNumber] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [birthDate, setbirthDate] = useState(null);
+  const [address, setaddress] = useState(null);
+  const [gender, setgender] = useState(null);
+  const [medicattions, setmedicattions] = useState(null);
+  const [med_text, setmed_text] = useState(null);
+  const [allergies, setallergies] = useState(null);
+  const [allergies_text, setallergies_text] = useState(null);
+  const [E_firstName, setE_firstName] = useState(null);
+  const [E_lastName, setE_lastName] = useState(null);
+  const [E_contactNumber, setE_contactNumber] = useState(null);
+
+    // const handleChange = (e) => {
+    //   setState({ ...state, [e.target.name]: e.target.value });
+    // };
+
+  const addNewPatient = async () => {
+    // let formField = new FormData();
+    // formField.append("firstname", firstName);
+    // formField.append("lastname", lastName);
+    // formField.append("phoneNumber", phoneNumber);
+    // formField.append("email", email);
+    // formField.append("Birthdate", Birthdate);
+    // formField.append("address", address);
+    // formField.append("gender", gender);
+    // formField.append("medications", medications);
+    // formField.append("med_text", med_text);
+    // formField.append("allergies", allergies);
+    // formField.append("allergies_text", allergies_text);
+    // formField.append("e_firstName", e_firstName);
+    // formField.append("e_lastName", e_lastName);
+    // formField.append("e_contactNumber", e_contactNumber);
+    const form = {
+      firstName,
+      lastName,
+      email,
+      birthDate,
+      address,
+      // gender,
+      medicattions,
+      med_text, 
+      allergies,
+      allergies_text,
+      E_firstName,
+      E_lastName,
+      E_contactNumber,
+    };
+    console.log(form);
+    await axios({
+      method: "POST",
+      url: "http://127.0.0.1:8000/api/patients/create/",
+      data: form,
+    })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
     return (
         <div className="container-fluid bg-primary my-5 py-5">
             <div className="container py-5" style={{ "width": "100%", "alignItems": "center" }}>
@@ -13,11 +83,29 @@ export default function AfterVisit() {
                                 <div className="row g-3">
                                     <div className="col-12 col-sm-6">
                                         <label for="date"> Patient First Name</label>
-                                        <input type="text" className="form-control bg-light border-0" placeholder="First Name" style={{ height: '55px' }} />
+                                        <input 
+                                            type="text" 
+                                            className="form-control bg-light border-0" 
+                                            placeholder="First Name" 
+                                            name="firstname"
+                                            style={{ height: '55px' }}                       
+                                            value={firstName}
+                                            //   onChange={handleChange}
+                                            onChange={(e) => setfirstName(e.target.value)}
+                                        />
                                     </div>
                                     <div className="col-12 col-sm-6">
                                         <label for="date"> Patient Last Name</label>
-                                        <input type="text" className="form-control bg-light border-0" placeholder="Last Name" style={{ height: '55px' }} />
+                                        <input 
+                                            type="text" 
+                                            className="form-control bg-light border-0" 
+                                            placeholder="Last Name" 
+                                            style={{ height: '55px' }} 
+                                            name="lastName"
+                                            value={lastName}
+                                            //   onChange={handleChange}
+                                            onChange={(e) => setfirstName(e.target.value)}
+                                        />
                                     </div>
                                     <div className="col-12 col-sm-6">
                                         <label for="date"> Patient Email</label>

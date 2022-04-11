@@ -2,13 +2,10 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-
 from django.contrib.auth.models import User
 from doctordashboard.serializers import  UserSerializer, UserSerializerWithToken
-# Create your views here.
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
@@ -40,7 +37,7 @@ def registerUser(request):
             email=data['email'],
             password=make_password(data['password'])
             # is_stuff = data['is_worker']
-            # is_patient = data['is_patient']
+            
         )
 
         serializer = UserSerializerWithToken(user, many=False)
@@ -51,7 +48,7 @@ def registerUser(request):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
     user = request.user
     serializer = UserSerializerWithToken(user, many=False)
@@ -70,7 +67,7 @@ def updateUserProfile(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
@@ -78,7 +75,7 @@ def getUserProfile(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -86,7 +83,7 @@ def getUsers(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
@@ -94,7 +91,7 @@ def getUserById(request, pk):
 
 
 @api_view(['PUT'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def updateUser(request, pk):
     user = User.objects.get(id=pk)
 
@@ -113,7 +110,7 @@ def updateUser(request, pk):
 
 
 @api_view(['DELETE'])
-@permission_classes([IsAdminUser])
+# @permission_classes([IsAdminUser])
 def deleteUser(request, pk):
     userForDeletion = User.objects.get(id=pk)
     userForDeletion.delete()
