@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from doctordashboard.models import Patient
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -16,7 +16,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 
 def getPatients(request):
     patients = Patient.objects.all()

@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from doctordashboard.views import aftervisit_views as views
+from doctordashboard.views import visit_views as views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('',views.getAfterVisits, name= "appointments"),
-    path('create/', views.postAfterVisit, name = "appointment-create"),
-    path('<str:pk>/',views.getAfterVisit, name = "appointment"),
-    path('update/<str:pk>/', views.postAfterVisit, name="appointment-update"),
-    path('delete/<str:pk>/', views.deleteAfterVisit, name="appointment-delete"),
+    path('',views.getVisits, name= "appointments"),
+    path('create/', views.postVisit, name = "appointment-create"),
+    path('<str:pk>/',views.getVisit, name = "appointment"),
+    path('update/<str:pk>/', views.postVisit, name="appointment-update"),
+    path('delete/<str:pk>/', views.deleteVisit, name="appointment-delete"),
 ]

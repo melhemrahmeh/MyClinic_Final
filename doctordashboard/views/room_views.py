@@ -15,7 +15,6 @@ from rest_framework.permissions import IsAdminUser
 
 
 
-
 @api_view(['GET'])
 def getRooms(request):
     rooms = Room.objects.all()

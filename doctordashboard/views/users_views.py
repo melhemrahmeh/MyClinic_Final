@@ -13,15 +13,10 @@ from rest_framework import status
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-
-        
-        #get all our data from serializer
         serializer = UserSerializerWithToken(self.user).data
         for k, v in serializer.items():
             data[k] = v
-
         return data
-
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -36,8 +31,6 @@ def registerUser(request):
             username=data['email'],
             email=data['email'],
             password=make_password(data['password'])
-            # is_stuff = data['is_worker']
-            
         )
 
         serializer = UserSerializerWithToken(user, many=False)
@@ -48,7 +41,7 @@ def registerUser(request):
 
 
 @api_view(['PUT'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def updateUserProfile(request):
     user = request.user
     serializer = UserSerializerWithToken(user, many=False)
@@ -67,7 +60,7 @@ def updateUserProfile(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
@@ -75,7 +68,7 @@ def getUserProfile(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
@@ -83,7 +76,7 @@ def getUsers(request):
 
 
 @api_view(['GET'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
@@ -91,7 +84,7 @@ def getUserById(request, pk):
 
 
 @api_view(['PUT'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def updateUser(request, pk):
     user = User.objects.get(id=pk)
 
@@ -110,7 +103,7 @@ def updateUser(request, pk):
 
 
 @api_view(['DELETE'])
-# @permission_classes([IsAdminUser])
+@permission_classes([IsAdminUser])
 def deleteUser(request, pk):
     userForDeletion = User.objects.get(id=pk)
     userForDeletion.delete()

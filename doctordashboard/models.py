@@ -1,75 +1,61 @@
 from django.db import models
 from datetime import datetime    
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import User
 
 
 
-# How to make Keys in specific key
 
-# class Clinic(models.Model):
+class Clinic(models.Model):
    
-#     clinicName = models.CharField(max_length=100, blank=True, null=True)
-#     _id = models.AutoField(primary_key=True, editable=False, null=False)
-
-
-
-class User(AbstractUser):
-    # clinic = models.ForeignKey(Clinic, on_delete = models.CASCADE)
-    # is_doctor =  ...
-    # is_patient = ...
-    # is_secretery = ...
-    # is_nurse =  ...
-    # is_administrator = ...
-    
-    is_patient =  models.BooleanField('patient status', default=False)
-    is_worker =  models.BooleanField('worker status', default=False)
+    clinicName = models.CharField(max_length=100, blank=True, null=True)
+    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
+    _id = models.AutoField(primary_key=True, editable=False, null=False)
     
     def __str__(self):
-        return self.username
+        return self.clinicName
     
-    
-    
-# #select 
-class Role(models.Model):
-    
-    ADMINISTRATOR =  'Administartor'
-    DENTIST_ASSISTANT =  'Dentist_Assistant'
-    NURSE =  'Nurse'
-    SECRETARY = 'Secretary'
 
-    role_choices =  [
-        (ADMINISTRATOR, 'Administartor'),
-        (DENTIST_ASSISTANT, 'Dentist_Assistant'),
-        (NURSE, 'Nurse'),
-        (SECRETARY, 'Secretary'),
-    ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    title =  models.CharField(max_length = 100 , choices=role_choices, null=True)
-    first_name = models.CharField(max_length = 50, null=True)
-    last_name = models.CharField(max_length = 50,null=True)
-    MALE =  'M'
-    FEMALE =  'F'
-    OTHER =  'O'
-    gender_choices =  [
-        (MALE, 'Male'),
-        (FEMALE, 'Female'),
-        (OTHER, 'Other'),
-    ]
-    gender =  models.CharField(max_length= 2, choices= gender_choices, default= OTHER, null=True)
-    email =  models.EmailField(null=True)
-    phone_number =  models.CharField(max_length=8, null=True)
-    _id = models.AutoField(primary_key=True, editable=False)
     
-    def __str__(self):
-        return self.title
+# class User(models.Model):
+    
+#     ADMINISTRATOR =  'Administartor'
+#     DENTIST_ASSISTANT =  'Dentist_Assistant'
+#     NURSE =  'Nurse'
+#     SECRETARY = 'Secretary'
+
+#     role_choices =  [   
+#         (ADMINISTRATOR, 'Administartor'),
+#         (DENTIST_ASSISTANT, 'Dentist_Assistant'),
+#         (NURSE, 'Nurse'),
+#         (SECRETARY, 'Secretary'),
+#     ]
+#     clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
+#     role =  models.CharField(max_length = 100 , choices=role_choices, null=True)
+#     first_name = models.CharField(max_length = 50, null=True)
+#     last_name = models.CharField(max_length = 50,null=True)
+#     MALE =  'M'
+#     FEMALE =  'F'
+#     OTHER =  'O'
+#     gender_choices =  [
+#         (MALE, 'Male'),
+#         (FEMALE, 'Female'),
+#         (OTHER, 'Other'),
+#     ]
+#     gender =  models.CharField(max_length= 2, choices= gender_choices, default= OTHER, null=True)
+#     email =  models.EmailField(null=True)
+#     phone_number =  models.CharField(max_length=8, null=True)
+#     _id = models.AutoField(primary_key=True, editable=False)
+    
+#     def __str__(self):
+#         return self.phone_number
     
     
 
 
 class Room(models.Model):
-    # room number m7al title
-    # clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE, default="")
+    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default=0, null = True) 
     room_name = models.CharField(max_length = 100, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     def __str__(self):
@@ -79,6 +65,8 @@ class Room(models.Model):
 
 
 class Operation(models.Model):
+    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE, default="")
+    room =  models.ForeignKey(Room, on_delete =  models.CASCADE, default="")
     title = models.CharField(max_length = 200 ,blank= True, null = True)
     cost =  models.DecimalField(max_digits=10, decimal_places=2, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
@@ -91,15 +79,12 @@ class Operation(models.Model):
 
 class Patient(models.Model):
    
-    # user        = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     firstName   = models.CharField(max_length=100, blank=True, null=True)
     lastName    = models.CharField(max_length=100, blank=True, null=True)
     PhoneNumber = models.CharField(max_length=100, blank=True, null=True)
     email       = models.EmailField(blank=True, null=True)
     birthDate   = models.DateField(blank=True, null=True)
     address     = models.CharField(max_length = 50)
-    #if yes fill 
-    
     gender_choices =  [
         
         ("MALE", "Male"),
@@ -111,10 +96,8 @@ class Patient(models.Model):
     med_text       = models.TextField(blank =  True, null =  True)
     allergies      = models.BooleanField(default=False, null= True)
     allergies_text = models.TextField(blank =  True, null=True)
-    #Emergency
     E_firstName = models.CharField(max_length=100, blank=True, null=True)
     E_lastName = models.CharField(max_length=100, blank=True, null=True) 
-    # E_Relationship = models.CharField(max_length = 150, default='father')
     E_contactNumber = models.CharField(max_length=100, blank=True, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
@@ -126,32 +109,28 @@ class Patient(models.Model):
 
 class Appointment(models.Model):
     
-    #Think more about the relations
-    #give each operation an estimated time both the dentist and patient know the time and benefit it
-    patient   = models.OneToOneField(Patient, on_delete = models.CASCADE, null=True)
-    createdby = models.ForeignKey(User, on_delete = models.CASCADE, related_name='+', null = True)
-    room      = models.OneToOneField(Room, on_delete = models.CASCADE, default="Operation", null = True)
-    doctor    = models.OneToOneField(User, on_delete =  models.CASCADE, default="Moh", null = True)
+    room      = models.ForeignKey(Room, on_delete = models.CASCADE, default="Operation", null = True)
+    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName  = models.CharField(max_length=100, blank=True, null=True)
     date      = models.DateField(auto_now=False, null=True)
     time      = models.TimeField(auto_now=False, null=True)
-    # duration =  models.DurationField()
+    duration =  models.IntegerField(null=False, default=0)
     operation = models.OneToOneField(Operation, on_delete= models.CASCADE, default="Tooth Extraction", null=True)
-    # reason =  models.CharField(max_length=100, null=True)
+    reason =  models.CharField(max_length=500, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return str(self.patient)
+        return self.firstName +  " " + self.lastName
     
     
 
-class AfterVisitSummary(models.Model):
+class Visit(models.Model):
     
-    patient = models.OneToOneField(Patient, on_delete = models.CASCADE)
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    operation = models.ManyToManyField(Operation,  default="Tooth Extraction")
-    
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,null=False,default=1)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE,null=False)
+    operation = models.ForeignKey(Operation, on_delete=models.CASCADE,null=True)
     todayvisit = models.DateField(default=datetime.now)
     nextvisit = models.DateField(default=datetime.now)
     time =  models.TimeField(default=timezone.now)
@@ -162,42 +141,20 @@ class AfterVisitSummary(models.Model):
     def __str__(self):
         return str(self.patient)
     
-
-
-# class Visit(models.Model):
-#     patient = models.OneToOneField(Patient, on_delete = models.CASCADE)
-#     room = models.OneToOneField(Room, on_delete = models.CASCADE)
-#     doctor = models.OneToOneField(User, on_delete =  models.CASCADE)
-#     datetime = models.DateTimeField(blank=True, default=datetime.date.today, null=False)
-#     cost =  models.DecimalField(max_digits=10, decimal_places=2, default=0)
-#     comments = models.CharField(max_length=500)
     
-# class VisitOperation(models.Model):
-#     visit = models.OneToOneField(Visit, on_delete=models.CASCADE)
-#     operation = models.ForeignKey(Operation,  on_delete=models.CASCADE)
-#     cost = models.DecimalField( max_digits=10, decimal_places=2, default= 0)
+class JournalEntryType(models.Model):
+    title = models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.title
 
 
-# class JournalEntryType(models.Model):
-#     title =  models.CharField(max_length=100)
+class PaymentJournal(models.Model):
     
-
-# # paymentjournal link it to the visit
-# class PaymentJournal(models.Model):
-#     patient =  models.OneToOneField(Patient, on_delete=models.CASCADE)
-#     journalentrytype =  models.OneToOneField(JournalEntryType, on_delete =  models.CASCADE)
-#     clinic =  models.OneToOneField(Clinic, on_delete=models.CASCADE)
-#     user = models.OneToOneField(User, on_delete = models.PROTECT)
-#     amount =  models.DecimalField(max_digits=10, decimal_places=2, default= 0)
-#     reason =  models.CharField(max_length=100)
-  
-# class Login(models.Model):
-#     username =  models.CharField(max_length = 100)
-#     password =  models.CharField(max_length = 50)
-    
-# class CreateUserForm(models.Model):
-#     username =  models.CharField(max_length= 100)
-#     email =  models.EmailField()
-#     password1 =  models.CharField(max_length = 50)
-#     password2 = models.CharField(max_length = 50)
-    
+    patient = models.ForeignKey(Patient, null= False,on_delete=models.CASCADE)
+    journal_entry_type = models.ForeignKey(JournalEntryType, null=False,on_delete=models.CASCADE)
+    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    totalBalance = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)
+    pendingBalance = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)
+    AmountDue = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)    
+    reason =  models.CharField(max_length=100) 

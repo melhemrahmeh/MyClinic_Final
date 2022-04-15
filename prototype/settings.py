@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'doctordashboard',
     'rest_framework',
     'corsheaders',
     'allauth',
@@ -48,7 +47,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
     'doctordashboard.apps.DoctordashboardConfig'
-
 ]
 
 
@@ -176,7 +174,6 @@ ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-AUTH_USER_MODEL = 'doctordashboard.User'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'clinicfront/build/static')
@@ -227,3 +224,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+
+
+MEDIA_ROOT = BASE_DIR / 'static/images'
+STATIC_ROOT = BASE_DIR / 'staticfiles'

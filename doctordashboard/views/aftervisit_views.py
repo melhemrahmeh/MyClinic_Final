@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from doctordashboard.models import AfterVisitSummary
+from doctordashboard.models import Visit
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from doctordashboard.serializers import AfterVisitSerializer
+from doctordashboard.serializers import VisitSerializer
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
@@ -14,20 +14,20 @@ from rest_framework.permissions import IsAdminUser
 
 
 @api_view(['GET'])
-def getAfterVisits(request):
+def getVisits(request):
     visits = AfterVisitSummary.objects.all()
     visit_serializer = AfterVisitSerializer(visits, many=True)
     return Response(visit_serializer.data)
 
 
 @api_view(['GET'])
-def getAfterVisit(request, pk):
+def getVisit(request, pk):
     visits  = AfterVisitSummary.objects.get(_id=pk)
     serializer = AfterVisitSerializer(visits, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
-def postAfterVisit(request):
+def postVisit(request):
     # permission_classes = [IsAdminUser]
     visit = JSONParser().parse(request)
     visit_serializer = AfterVisitSummary(data=visit)
@@ -37,7 +37,7 @@ def postAfterVisit(request):
     return JsonResponse("Failed to Add.", safe=False)
 
 @api_view(['PUT'])
-def putAfterVisit(request, pk):
+def putVisit(request, pk):
     # permission_classes = [IsAdminUser]
     visit = JSONParser().parse(request)
     visit_data = App.objects.get(_id=pk)
@@ -48,7 +48,7 @@ def putAfterVisit(request, pk):
     return JsonResponse("Failed to Update.", safe=False)
    
 @api_view(['DELETE'])
-def deleteAfterVisit(request, pk):
+def deleteVisit(request, pk):
     # permission_classes = [IsAdminUser]
     visit = AfterVisitSummary.objects.get(_id=pk)
     AfterVisitSummary.delete()

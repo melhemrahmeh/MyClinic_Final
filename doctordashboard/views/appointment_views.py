@@ -10,9 +10,7 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from django.contrib import messages
 from django.core.files.storage import default_storage
-from rest_framework.permissions import IsAdminUser
-
-
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 
@@ -41,7 +39,6 @@ def postAppointment(request):
 
 @api_view(['PUT'])
 def putAppointment(request, pk):
-    # permission_classes = [IsAdminUser]
     appointment = JSONParser().parse(request)
     appointment_data = App.objects.get(_id=pk)
     appointment_serializer = AppointmentSerializer(patient_data, data=patient)
@@ -52,7 +49,6 @@ def putAppointment(request, pk):
    
 @api_view(['DELETE'])
 def deleteAppointment(request, pk):
-    # permission_classes = [IsAdminUser]
     appointment = Appointment.objects.get(_id=pk)
     Appointment.delete()
     return Response('"Deleted Succeffully!!", safe=False') 

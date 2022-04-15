@@ -1,7 +1,42 @@
 import { Link } from 'react-router-dom'
-import React  from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Appointment() {
+
+  let navigate = useNavigate();
+  const [firstName, setfirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [date, setDate] = useState(null);
+  const [time, setTime] = useState(null);
+  const [operation, setOperation] = useState(null);
+
+  const addNewAppointment = async () => {
+    const form = {
+      firstName,
+      lastName,
+      email,
+      date,
+      time,
+      operation
+    };
+    console.log(form);
+    await axios({
+      method: "POST",
+      url: "http://127.0.0.1:8000/api/appointments/create/",
+      data: form,
+    })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="container-fluid bg-primary my-5 py-5">
       <div className="container py-5">
@@ -24,36 +59,85 @@ export default function Appointment() {
               <form>
                 <div className="row g-3">
                   <div className="col-12 col-sm-6">
-                    <input type="text" className="form-control bg-light border-0" placeholder="First Name" style={{ height: '55px' }} />
+
+                    <input type="text"
+                      className="form-control bg-light border-0"
+                      placeholder="First Name"
+                      name="firstName"
+                      value={firstName}
+                      //   onChange={handleChange}
+                      onChange={(e) => setfirstName(e.target.value)}
+                      style={{ height: "55px" }}
+                    />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <input type="text" className="form-control bg-light border-0" placeholder="Last Name" style={{ height: '55px' }} />
+                    <input type="text"
+                      className="form-control bg-light border-0"
+                      placeholder="Last Name"
+                      name="lastName"
+                      value={lastName}
+                      //   onChange={handleChange}
+                      onChange={(e) => setLastName(e.target.value)}
+                      style={{ height: "55px" }}
+                    />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <input type="email" className="form-control bg-light border-0" placeholder="Your Email" style={{ height: '55px' }} />
+                    <input type="email"
+                      className="form-control bg-light border-0"
+                      placeholder="Your Email"
+                      name="email"
+                      value={email}
+                      //   onChange={handleChange}
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{ height: "55px" }}
+                    />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <select className="form-select bg-light border-0" style={{ height: '55px' }}>
+                    <select
+                      className="form-select bg-light border-0"
+                      name="operation"
+                      value={operation}
+                      onChange={(e) => setOperation(e.target.value)}
+                      style={{ height: "55px" }}
+                    >
                       <option selected>Select Operation</option>
                       <option value={1}>Operation 1</option>
-                      <option value={2}>Operation 2</option>
-                      <option value={3}>Operation 3</option>
                     </select>
                   </div>
                   <div className="col-12 col-sm-6">
                     <div className="date" id="date" data-target-input="nearest">
                       <label for="date"> Date</label>
-                      <input type="date" className="form-control bg-light border-0 datetimepicker-input" data-target="#date" data-toggle="datetimepicker" style={{ height: '55px' }} />
+                      <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="form-control bg-light border-0"
+                        style={{ height: "55px" }}
+                      />
                     </div>
                   </div>
                   <div className="col-12 col-sm-6">
                     <div className="time" id="time" data-target-input="nearest">
                       <label for="date"> Time</label>
-                      <input type="time" id="appt" name="appt" className="form-control bg-light border-0 datetimepicker-input" data-target="#time" data-toggle="datetimepicker" style={{ height: '55px' }}/>
+                      <input
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="form-control bg-light border-0 datetimepicker-input"
+                        data-target="#time"
+                        data-toggle="datetimepicker"
+                        style={{ height: "55px" }}
+                      />
                     </div>
                   </div>
                   <div className="col-12">
-                    <button className="btn btn-primary w-100 py-3" type="submit">Book</button>
+                    <button
+                      className="btn btn-primary w-100 py-3"
+                      type="submit"
+                      onClick={addNewAppointment}
+                    >
+                      Book
+                    </button>
                   </div>
                 </div>
               </form>
