@@ -6,14 +6,14 @@ from django.contrib.auth.models import User
 
 
 
-class Clinic(models.Model):
+# class Clinic(models.Model):
    
-    clinicName = models.CharField(max_length=100, blank=True, null=True)
-    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
-    _id = models.AutoField(primary_key=True, editable=False, null=False)
+#     clinicName = models.CharField(max_length=100, blank=True, null=True)
+#     doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
+#     _id = models.AutoField(primary_key=True, editable=False, null=False)
     
-    def __str__(self):
-        return self.clinicName
+#     def __str__(self):
+#         return self.clinicName
     
 
     
@@ -54,8 +54,6 @@ class Clinic(models.Model):
 
 
 class Room(models.Model):
-    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE, default="")
-    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default=0, null = True) 
     room_name = models.CharField(max_length = 100, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     def __str__(self):
@@ -65,7 +63,7 @@ class Room(models.Model):
 
 
 class Operation(models.Model):
-    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE, default="")
+    # clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE, default="")
     room =  models.ForeignKey(Room, on_delete =  models.CASCADE, default="")
     title = models.CharField(max_length = 200 ,blank= True, null = True)
     cost =  models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -92,32 +90,28 @@ class Patient(models.Model):
         ("OTHER", "Other"),
     ]
     gender         = models.CharField(max_length= 20, choices= gender_choices, default= "OTHER")
-    medicattions   = models.BooleanField(default=False, null=  True)
-    med_text       = models.TextField(blank =  True, null =  True)
-    allergies      = models.BooleanField(default=False, null= True)
-    allergies_text = models.TextField(blank =  True, null=True)
     E_firstName = models.CharField(max_length=100, blank=True, null=True)
     E_lastName = models.CharField(max_length=100, blank=True, null=True) 
     E_contactNumber = models.CharField(max_length=100, blank=True, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
-        return self.PhoneNumber
+        return self.email
     
     
     
 
 class Appointment(models.Model):
     
-    room      = models.ForeignKey(Room, on_delete = models.CASCADE, default="Operation", null = True)
-    doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
+    #room      = models.ForeignKey(Room, on_delete = models.CASCADE, default="Operation", null = True)
+    #doctor    = models.ForeignKey(User, on_delete =  models.CASCADE, default="Moh", null = True) 
     firstName = models.CharField(max_length=100, blank=True, null=True)
     lastName  = models.CharField(max_length=100, blank=True, null=True)
     date      = models.DateField(auto_now=False, null=True)
     time      = models.TimeField(auto_now=False, null=True)
-    duration =  models.IntegerField(null=False, default=0)
-    operation = models.OneToOneField(Operation, on_delete= models.CASCADE, default="Tooth Extraction", null=True)
-    reason =  models.CharField(max_length=500, null=True)
+    #duration =  models.IntegerField(null=False, default=0)
+    operation = models.ForeignKey(Operation, on_delete= models.CASCADE, default="Tooth Extraction", null=True)
+    #reason =  models.CharField(max_length=500, null=True)
     _id = models.AutoField(primary_key=True, editable=False)
     
     def __str__(self):
@@ -153,8 +147,20 @@ class PaymentJournal(models.Model):
     
     patient = models.ForeignKey(Patient, null= False,on_delete=models.CASCADE)
     journal_entry_type = models.ForeignKey(JournalEntryType, null=False,on_delete=models.CASCADE)
-    clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
+    # clinic =  models.ForeignKey(Clinic, on_delete = models.CASCADE)
     totalBalance = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)
     pendingBalance = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)
     AmountDue = models.DecimalField(max_digits=10, default=0.00, decimal_places=2, blank=True, null=True)    
     reason =  models.CharField(max_length=100) 
+    
+    
+    
+class Form(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
+    PhoneNumber = models.CharField(max_length=100, blank=True, null=True)
+    subject = models.CharField(max_length=100)    
+    message =  models.CharField(max_length=100) 
+    
+    def __str__(self):
+        return self.name

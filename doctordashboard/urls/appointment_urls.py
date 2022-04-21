@@ -8,6 +8,6 @@ urlpatterns = [
     path('',views.getAppointments, name= "appointments"),
     path('create/', views.postAppointment, name = "appointment-create"),
     path('<str:pk>/',views.getAppointment, name = "appointment"),
-    path('update/<str:pk>/', views.postAppointment, name="appointment-update"),
+    path('update/<str:pk>/', views.putAppointment, name="appointment-update"),
     path('delete/<str:pk>/', views.deleteAppointment, name="appointment-delete"),
 ]

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from doctordashboard.models import Appointment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 @api_view(['GET'])
+#@permission_classes([IsAuthenticated])
 def getAppointments(request):
     appointments = Appointment.objects.all()
     appointment_serializer = AppointmentSerializer(appointments, many=True)
@@ -22,12 +23,14 @@ def getAppointments(request):
 
 
 @api_view(['GET'])
+#@permission_classes([IsAuthenticated])
 def getAppointment(request, pk):
     apppointments = Appointment.objects.get(_id=pk)
     serializer = AppointmentSerializer(apppointments, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
+#@permission_classes([IsAuthenticated])
 def postAppointment(request):
     # permission_classes = [IsAdminUser]
     appointment = JSONParser().parse(request)
@@ -38,17 +41,19 @@ def postAppointment(request):
     return JsonResponse("Failed to Add.", safe=False)
 
 @api_view(['PUT'])
+#@permission_classes([IsAuthenticated])
 def putAppointment(request, pk):
     appointment = JSONParser().parse(request)
-    appointment_data = App.objects.get(_id=pk)
-    appointment_serializer = AppointmentSerializer(patient_data, data=patient)
+    appointment_data = Appointment.objects.get(_id=pk)
+    appointment_serializer = AppointmentSerializer(appointment_data, data=appointment)
     if appointment_serializer.is_valid():
         appointment_serializer.save()
         return JsonResponse("Updated Successfully!!", safe=False)
     return JsonResponse("Failed to Update.", safe=False)
    
 @api_view(['DELETE'])
+#@permission_classes([IsAuthenticated])
 def deleteAppointment(request, pk):
     appointment = Appointment.objects.get(_id=pk)
-    Appointment.delete()
-    return Response('"Deleted Succeffully!!", safe=False') 
+    appointment.delete()
+    return JsonResponse("Deleted Succeffully!!", safe=False) 

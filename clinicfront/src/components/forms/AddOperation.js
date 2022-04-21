@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -7,12 +7,14 @@ export default function AddEmployee() {
   // const [state, setState] = useState({});
   const [title, settitle] = useState(null);
   const [cost, setcost] = useState(null);
+  const [room, setRoom] = useState(null);
   const [description, setdescription] = useState(null);
 
   const addNewOperation = async () => {
     const form = {
       title,
       cost,
+      room,
       description,
     };
     console.log(form);
@@ -23,12 +25,27 @@ export default function AddEmployee() {
     })
       .then((response) => {
         console.log(response.data);
-        navigate("/");
+        navigate("/myoperations");
       })
       .catch((e) => {
         console.log(e);
       });
   };
+
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/rooms/")
+      .then((res) => {
+        setData(res.data);
+        console.log("Result:", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <div className="container-fluid bg-primary my-5 py-5">
@@ -75,6 +92,27 @@ export default function AddEmployee() {
                       style={{ height: "55px" }}
                     />
                   </div>
+                  <div
+                    className="col-12 col-sm-6"
+                    style={{ width: "60%", margin: "auto" }}
+                  >
+                    <br />
+                    <label for="myfile"> Room </label>
+                    <select
+                      className="form-select bg-light border-0"
+                      name="room"
+                      value={room}
+                      onChange={(e) => setRoom(e.target.value)}
+                      style={{ height: "55px" }}
+                    >
+                      {data.map((room) => (
+                        <option value={room._id}>{ room.room_name}</option>
+                      ))
+                      }
+                    </select>
+                  </div>
+
+
                   <div
                     className="col-12 col-sm-6"
                     style={{ width: "60%", margin: "auto" }}

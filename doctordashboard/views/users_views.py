@@ -30,14 +30,15 @@ def registerUser(request):
             first_name=data['name'],
             username=data['email'],
             email=data['email'],
+            name = data['name'],
             password=make_password(data['password'])
         )
 
         serializer = UserSerializerWithToken(user, many=False)
-        return Response(serializer.data)
+        return JsonResponse(serializer.data)
     except:
         message = {'detail': 'User with this email already exists'}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse(message, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT'])
@@ -56,7 +57,7 @@ def updateUserProfile(request):
 
     user.save()
 
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['GET'])
@@ -64,7 +65,7 @@ def updateUserProfile(request):
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['GET'])
@@ -72,7 +73,7 @@ def getUserProfile(request):
 def getUsers(request):
     users = User.objects.all()
     serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['GET'])
@@ -80,7 +81,7 @@ def getUsers(request):
 def getUserById(request, pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializer(user, many=False)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['PUT'])
@@ -99,7 +100,7 @@ def updateUser(request, pk):
 
     serializer = UserSerializer(user, many=False)
 
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @api_view(['DELETE'])
@@ -107,4 +108,4 @@ def updateUser(request, pk):
 def deleteUser(request, pk):
     userForDeletion = User.objects.get(id=pk)
     userForDeletion.delete()
-    return Response('User was deleted')
+    return JsonResponse('User was deleted')

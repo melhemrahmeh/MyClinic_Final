@@ -1,9 +1,34 @@
 import { Link } from 'react-router-dom'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Appointment() {
+
+
+  const [patients, setPatients] = useState([]);
+  const [nameinDB, setNameinDB] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/patients/")
+      .then((res) => {
+        setPatients(res.data);
+        console.log("Result:", patients);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  let DBNames = []
+  for (let i = 0; i < patients.length; i++) {
+    DBNames.push(patients[i].firstName.trim() + " " + patients[i].lastName.trim(),
+    );
+  }
+
+  console.log(DBNames);
+
 
   let navigate = useNavigate();
   const [firstName, setfirstName] = useState(null);
@@ -23,19 +48,48 @@ export default function Appointment() {
       operation
     };
     console.log(form);
-    await axios({
-      method: "POST",
-      url: "http://127.0.0.1:8000/api/appointments/create/",
-      data: form,
-    })
-      .then((response) => {
-        console.log(response.data);
-        navigate("/");
+
+    for (let i = 0; i < DBNames.length; i++) {
+      if (DBNames[i] === patients[i].firstName.trim() + " " + patients[i].lastName.trim()) {
+        setNameinDB(true);
+      }
+    }
+
+
+    if (form.firstName !== null && form.lastName !== null && form.email !== null && form.date !== null && form.time !== null && form.operation !== null && nameinDB) {
+      await axios({
+        method: "POST",
+        url: "http://127.0.0.1:8000/api/appointments/create/",
+        data: form,
       })
-      .catch((e) => {
-        console.log(e);
-      });
+        .then((response) => {
+          console.log(response.data);
+          navigate("/");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      setNameinDB(false);
+    }
   };
+
+
+
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/operations/")
+      .then((res) => {
+        setData(res.data);
+        console.log("Result:", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
 
   return (
     <div className="container-fluid bg-primary my-5 py-5">
@@ -68,6 +122,7 @@ export default function Appointment() {
                       //   onChange={handleChange}
                       onChange={(e) => setfirstName(e.target.value)}
                       style={{ height: "55px" }}
+                      required
                     />
                   </div>
                   <div className="col-12 col-sm-6">
@@ -79,6 +134,7 @@ export default function Appointment() {
                       //   onChange={handleChange}
                       onChange={(e) => setLastName(e.target.value)}
                       style={{ height: "55px" }}
+                      required
                     />
                   </div>
                   <div className="col-12 col-sm-6">
@@ -90,6 +146,7 @@ export default function Appointment() {
                       //   onChange={handleChange}
                       onChange={(e) => setEmail(e.target.value)}
                       style={{ height: "55px" }}
+                      required
                     />
                   </div>
                   <div className="col-12 col-sm-6">
@@ -100,8 +157,10 @@ export default function Appointment() {
                       onChange={(e) => setOperation(e.target.value)}
                       style={{ height: "55px" }}
                     >
-                      <option selected>Select Operation</option>
-                      <option value={1}>Operation 1</option>
+                      {data.map((op) => (
+                        <option value={op._id}>{op.title}</option>
+                      ))
+                      }
                     </select>
                   </div>
                   <div className="col-12 col-sm-6">
@@ -113,6 +172,7 @@ export default function Appointment() {
                         onChange={(e) => setDate(e.target.value)}
                         className="form-control bg-light border-0"
                         style={{ height: "55px" }}
+                        required
                       />
                     </div>
                   </div>
@@ -127,6 +187,8 @@ export default function Appointment() {
                         data-target="#time"
                         data-toggle="datetimepicker"
                         style={{ height: "55px" }}
+                        min="09:00" max="18:00" step="1800"
+                        required
                       />
                     </div>
                   </div>

@@ -18,7 +18,7 @@ urlpatterns = [
     path('', views.getPatients, name = "patients"),
     path('create/', views.postPatient, name = "patient-create"),
     path('<str:pk>/', views.getPatient, name="patient"),
-    path('update/<str:pk>/', views.postPatient, name="patient-update"),
+    path('update/<str:pk>/', views.putPatient, name="patient-update"),
     path('delete/<str:pk>/', views.deletePatient, name="patient-delete")
    
 ] 

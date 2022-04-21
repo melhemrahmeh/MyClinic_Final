@@ -32,15 +32,14 @@ class VisitOperationViewSet(viewsets.ModelViewSet):
     queryset =  models.VisitOperation.objects.all()
     serializer_class = serializers.VisitOperationSerializer
     
-# class RoleViewSet(viewsets.ModelViewSet):
-#     queryset =  models.Role.objects.all()
-#     serializer_class = serializers.RoleSerializer
+class FormViewSet(viewsets.ModelViewSet):
+    queryset =  models.Form.objects.all()
+    serializer_class = serializers.RoleSerializer
     
 class OperationViewSet(viewsets.ModelViewSet):
     queryset =  models.Operation.objects.all()
-    serializer_class = serializers.OperationSerializer
+    serializer_class = serializers.FormSerializer
     
 class RoomViewSet(viewsets.ModelViewSet):
     queryset =  models.Room.objects.all()
     serializer_class = serializers.RoomSerializer
-    
