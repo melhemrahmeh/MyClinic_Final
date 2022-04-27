@@ -4,21 +4,42 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
  
 export default function ClinicOperation() {
-    const [data, setData] = useState([]);
+    const [operations, setOperations] = useState([]);
+    const WAIT_TIME = 500;
+
     useEffect(() => {
-        axios
+        const id = setInterval(() => {
+            axios
             .get("http://127.0.0.1:8000/api/operations/")
             .then((res) => {
-                setData(res.data);
-                console.log("Result:", data);
+                setOperations(res.data);
+                console.log("Result:", res.data);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
- 
+        }, WAIT_TIME);
+        return () => clearInterval(id);
+    }, [operations]);
+
+
     const [buttonPopup, setButtonPopup] = useState(false);
  
+
+
+    function deleteRow(id, e) {
+        axios.delete(`http://127.0.0.1:8000/api/operations/delete/${id}/`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+
+                const posts = operations.filter(item => item.id !== id);
+                setOperations(posts);
+            })
+    }
+
+
+
     return (
         <>
             <br />
@@ -39,14 +60,14 @@ export default function ClinicOperation() {
                         </thead>
  
                         <tbody>
-                            {data.map((operation) => (
+                            {operations.map((operation) => (
                                 <>
  
                                     <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                                         <td style={{ 'color': "#5D5C63" }}>{operation.title}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{operation.description}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{operation.cost}</td>
-                                        <td style={{ 'color': "#5D5C63" }}> <button type="button" class="btn btn-info" onClick={() => setButtonPopup(true)}>Edit</button>   or   <button type="button" class="btn btn-danger">Delete</button></td>
+                                        <td style={{ 'color': "#5D5C63" }}> <button type="button" class="btn btn-info" onClick={() => setButtonPopup(true)}>Edit</button>   or   <button type="button" class="btn btn-danger" onClick={(e) => deleteRow(operation._id, e)} >Delete</button></td>
 
                                         <br />
                                         <PopupOperation trigger={buttonPopup} setTrigger={setButtonPopup}>

@@ -9,19 +9,50 @@ export default function PatientTable() {
     const [buttonPopup, setButtonPopup] = useState(false);
     const [EditPopup, setEditPopup] = useState(false);
 
-    useEffect(() => {
-        axios
-            .get("http://127.0.0.1:8000/api/patients/")
-            .then((res) => {
-                setData(res.data);
-                console.log("Result:", data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+    const WAIT_TIME = 500;
 
- 
+    useEffect(() => {
+        const id = setInterval(() => {
+            axios
+                .get("http://127.0.0.1:8000/api/patients/")
+                .then((res) => {
+                    setData(res.data);
+                    console.log("Result:", data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }, WAIT_TIME);
+        return () => clearInterval(id);
+    }, [data]);
+
+    // function getPatientVisit(patient) {
+    //     const [visits, setVisits] = useState([]);
+    //     useEffect(() => {
+    //         axios
+    //             .get(`http://127.0.0.1:8000/api/patients/visits/${patient}/`)
+    //             .then((res) => {
+    //                 setVisits(res.data);
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //             });
+    //     }, []);
+    //     return visits
+    // }
+
+
+    function deleteRow(id, e) {
+        axios.delete(`http://127.0.0.1:8000/api/patients/delete/${id}/`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+
+                const posts = data.filter(item => item.id !== id);
+                setData(posts);
+            })
+    }
+
     return (
         <>
             <br />
@@ -45,15 +76,15 @@ export default function PatientTable() {
                         </thead>
 
                         <tbody>
-                            {data.map((patient) => (
+                            {data.map((patient, index) => (
                                 <>
-                                    <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                    <tr data-toggle="collapse" data-target={`#demo${index}`} class="accordion-toggle">
                                         <td style={{ 'color': "#5D5C63" }}><pre>{patient.firstName} {patient.lastName}</pre></td>
                                         <td style={{ 'color': "#5D5C63" }}>{patient.email}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{patient.PhoneNumber}</td>
                                         <td style={{ 'color': "#5D5C63" }}>100$</td>
                                         <td style={{ 'color': "#5D5C63" }}>6</td>
-                                        <td style={{ 'color': "#5D5C63" }}>  <button type="button" class="btn btn-info" onClick={() => setEditPopup(true)}>Edit</button>  or  <button type="button" class="btn btn-danger">Delete</button></td>
+                                        <td style={{ 'color': "#5D5C63" }}>  <button type="button" class="btn btn-info" onClick={() => setEditPopup(true)}>Edit</button>  or  <button type="button" class="btn btn-danger" onClick={(e) => deleteRow(patient._id, e)}>Delete</button></td>
 
                                         <br />
                                         <PopupPatient trigger={EditPopup} setTrigger={setEditPopup}>
@@ -90,7 +121,7 @@ export default function PatientTable() {
                                     </tr>
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
-                                            <div class="accordian-body collapse" id="demo1">
+                                            <div class="accordian-body collapse" id={`demo${index}`}>
 
                                                 <br />
                                                 <button type="button" class="btn btn-info" onClick={() => setButtonPopup(true)}>Add Appointment</button><br />
@@ -146,36 +177,19 @@ export default function PatientTable() {
                                                             <th style={{ 'color': "#5D5C63" }}>Price</th>
                                                             <th style={{ 'color': "#5D5C63" }}>Amount Paid</th>
                                                             <th style={{ 'color': "#5D5C63" }}>Amount Due</th>
-                                                            <th style={{ 'color': "#5D5C63" }}>Summary</th>
                                                         </tr>
                                                     </thead>
 
                                                     <tbody>
-
-                                                        <tr data-toggle="collapse" class="accordion-toggle">
-                                                            <td style={{ 'color': "#5D5D60" }}>2016/09/27</td>
-                                                            <td style={{ 'color': "#5D5D60" }}>Root Canal</td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 0$</td>
-                                                            <td style={{ 'color': "#5D5D60" }}><i class='bx bxs-file-pdf' style={{ "font-size": "25px" }}></i>After Visit Summary</td>
-                                                        </tr>
-                                                        <tr data-toggle="collapse" class="accordion-toggle">
-                                                            <td style={{ 'color': "#5D5D60" }}>2016/09/27</td>
-                                                            <td style={{ 'color': "#5D5D60" }}>Root Canal</td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 0$</td>
-                                                            <td style={{ 'color': "#5D5D60" }}><i class='bx bxs-file-pdf' style={{ "font-size": "25px" }}></i>After Visit Summary</td>
-                                                        </tr>
-                                                        <tr data-toggle="collapse" class="accordion-toggle">
-                                                            <td style={{ 'color': "#5D5D60" }}>2016/09/27</td>
-                                                            <td style={{ 'color': "#5D5D60" }}>Root Canal</td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 100$ </td>
-                                                            <td style={{ 'color': "#5D5D60" }}> 0$</td>
-                                                            <td style={{ 'color': "#5D5D60" }}><i class='bx bxs-file-pdf' style={{ "font-size": "25px" }}></i>After Visit Summary</td>
-                                                        </tr>
+                                                        {/* {getPatientVisit(patient._id).map((patient, index) => (
+                                                            <tr data-toggle="collapse" class="accordion-toggle">
+                                                                <td style={{ 'color': "#5D5D60" }}>2016/09/27</td>
+                                                                <td style={{ 'color': "#5D5D60" }}>Root Canal</td>
+                                                                <td style={{ 'color': "#5D5D60" }}> 100$ </td>
+                                                                <td style={{ 'color': "#5D5D60" }}> 100$ </td>
+                                                                <td style={{ 'color': "#5D5D60" }}> 0$</td>
+                                                            </tr>
+                                                        ))} */}
                                                     </tbody>
                                                 </table>
 

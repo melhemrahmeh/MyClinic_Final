@@ -5,8 +5,11 @@ import axios from "axios";
 export default function Schedule() {
     const [data, setData] = useState([]);
 
+    const WAIT_TIME = 500;
+
     useEffect(() => {
-        axios
+        const id = setInterval(() => {
+            axios
             .get("http://127.0.0.1:8000/api/appointments/")
             .then((res) => {
                 setData(res.data);
@@ -15,7 +18,11 @@ export default function Schedule() {
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+        }, WAIT_TIME);
+        return () => clearInterval(id);
+    }, [data]);
+
+    
 
     const parsedData = [
     ];
@@ -24,14 +31,16 @@ export default function Schedule() {
 
     for (let i = 0; i < data.length; i++) {
         let t = data[i].time
-        let minutes = (parseInt(t.substring(3, 5)) + 29);
-        let endtime = t.substring(0, 3) + minutes + t.substring(5, t.length)
+        let end = new Date(data[i].date + "T" + data[i].time + "+03:00")       
+        end.setMinutes(end.getMinutes() + 30);
+
         parsedData.push({
             Subject: data[i].firstName + data[i].lastName + data[i].operation,
             StartTime: new Date(data[i].date+"T"+data[i].time+"+03:00"),
-            EndTime: new Date(data[i].date + "T" + endtime + "+03:00")
+            EndTime: new Date(end)
         });
     }
+    console.log(parsedData);
 
 
     return (

@@ -43,7 +43,7 @@ export default function Footer(props) {
               <Link to={about} className="text-light mb-2" ><i className="fa fa-angle-right me-2" />About Us</Link>
               <Link to={operations} className="text-light mb-2" ><i className="fa fa-angle-right me-2" />Our Services</Link>
               <Link to={team} className="text-light mb-2" ><i className="fa fa-angle-right me-2" />Meet the Team</Link>
-              <Link to={team} className="text-light mb-2" ><i className="fa fa-angle-right me-2" />Contact us</Link>
+              <Link to="/contactus" className="text-light mb-2" ><i className="fa fa-angle-right me-2" />Contact us</Link>
             </div>
           </div>
           <div className="col-lg-3 col-md-6">

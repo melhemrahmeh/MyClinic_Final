@@ -5,19 +5,36 @@ import axios from "axios";
 
 export default function ContactRequests() {
     const [data, setData] = useState([]);
-    useEffect(() => {
-        axios
-            .get("http://127.0.0.1:8000/api/forms/")
-            .then((res) => {
-                setData(res.data);
-                console.log("Result:", data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
 
-    const [buttonPopup, setButtonPopup] = useState(false);
+
+    const WAIT_TIME = 200;
+
+    useEffect(() => {
+        const id = setInterval(() => {
+            axios
+                .get("http://127.0.0.1:8000/api/forms/")
+                .then((res) => {
+                    setData(res.data);
+                    console.log("Result:", data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }, WAIT_TIME);
+        return () => clearInterval(id);
+    }, [data]);
+
+
+    function deleteRow(id, e) {
+        axios.delete(`http://127.0.0.1:8000/api/forms/delete/${id}/`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+
+                const posts = data.filter(item => item.id !== id);
+                setData(posts);
+            })
+    }
 
     return (
         <>
@@ -36,6 +53,7 @@ export default function ContactRequests() {
                                 <th style={{ 'color': "#535356" }}>Phone Number</th>
                                 <th style={{ 'color': "#535356" }}>Subject</th>
                                 <th style={{ 'color': "#535356" }}>Message</th>
+                                <th style={{ 'color': "#535356" }}>Delete Request</th>
                             </tr>
                         </thead>
 
@@ -49,6 +67,7 @@ export default function ContactRequests() {
                                         <td style={{ 'color': "#5D5C63" }}>{req.PhoneNumber}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{req.subject}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{req.message}</td>
+                                        <td style={{ 'color': "#5D5C63" }}><button type="button" class="btn btn-danger" onClick={(e) => deleteRow(req._id, e)} >Delete</button></td>
                                     </tr>
                                 </>
                             ))}

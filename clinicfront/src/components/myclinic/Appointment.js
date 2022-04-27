@@ -4,41 +4,19 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Appointment() {
-
-
-  const [patients, setPatients] = useState([]);
-  const [nameinDB, setNameinDB] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/patients/")
-      .then((res) => {
-        setPatients(res.data);
-        console.log("Result:", patients);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
-  let DBNames = []
-  for (let i = 0; i < patients.length; i++) {
-    DBNames.push(patients[i].firstName.trim() + " " + patients[i].lastName.trim(),
-    );
-  }
-
-  console.log(DBNames);
+  const [data, setData] = useState([]);
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [operation, setOperation] = useState(1);
 
 
   let navigate = useNavigate();
-  const [firstName, setfirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [date, setDate] = useState(null);
-  const [time, setTime] = useState(null);
-  const [operation, setOperation] = useState(null);
 
   const addNewAppointment = async () => {
+
     const form = {
       firstName,
       lastName,
@@ -47,43 +25,26 @@ export default function Appointment() {
       time,
       operation
     };
-    console.log(form);
-
-    for (let i = 0; i < DBNames.length; i++) {
-      if (DBNames[i] === patients[i].firstName.trim() + " " + patients[i].lastName.trim()) {
-        setNameinDB(true);
-      }
-    }
-
-
-    if (form.firstName !== null && form.lastName !== null && form.email !== null && form.date !== null && form.time !== null && form.operation !== null && nameinDB) {
-      await axios({
-        method: "POST",
-        url: "http://127.0.0.1:8000/api/appointments/create/",
-        data: form,
+    //console.log(form);
+    await axios({
+      method: "POST",
+      url: "http://127.0.0.1:8000/api/appointments/create/",
+      data: form,
+    })
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
       })
-        .then((response) => {
-          console.log(response.data);
-          navigate("/");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      setNameinDB(false);
-    }
+      .catch((e) => {
+        console.log(e);
+      });
   };
-
-
-
-
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/api/operations/")
       .then((res) => {
         setData(res.data);
-        console.log("Result:", data);
       })
       .catch((error) => {
         console.log(error);
@@ -108,7 +69,7 @@ export default function Appointment() {
           <div className="col-lg-6">
             <div className="bg-white text-center rounded p-5">
               <h1 className="mb-4">Book An Appointment</h1>
-              <h5>New? Create an account <Link to={"/joinpatient"}>here</Link></h5>
+              <h5>New? <Link to={"/contactus"}>Contact us</Link></h5>
               <br />
               <form>
                 <div className="row g-3">
@@ -140,7 +101,7 @@ export default function Appointment() {
                   <div className="col-12 col-sm-6">
                     <input type="email"
                       className="form-control bg-light border-0"
-                      placeholder="Your Email"
+                      placeholder="Enter your mail"
                       name="email"
                       value={email}
                       //   onChange={handleChange}
@@ -157,16 +118,17 @@ export default function Appointment() {
                       onChange={(e) => setOperation(e.target.value)}
                       style={{ height: "55px" }}
                     >
-                      {data.map((op) => (
-                        <option value={op._id}>{op.title}</option>
-                      ))
-                      }
+                      <option selected> Select Operation </option>
+                      {data.map((op) => (<option value={op._id}>{op.title} {op.cost}$ </option>))}
                     </select>
                   </div>
                   <div className="col-12 col-sm-6">
                     <div className="date" id="date" data-target-input="nearest">
                       <label for="date"> Date</label>
                       <input
+                        data-target="#date"
+                        data-toggle="datetimepicker"
+                        name="date"
                         type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
@@ -180,12 +142,11 @@ export default function Appointment() {
                     <div className="time" id="time" data-target-input="nearest">
                       <label for="date"> Time</label>
                       <input
+                        name="time"
                         type="time"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
                         className="form-control bg-light border-0 datetimepicker-input"
-                        data-target="#time"
-                        data-toggle="datetimepicker"
                         style={{ height: "55px" }}
                         min="09:00" max="18:00" step="1800"
                         required

@@ -7,9 +7,8 @@ import axios from "axios";
 
 
 export default function AddPatient() {
-    
+
   let navigate = useNavigate();
-  const [state, setState] = useState({});
   const [firstName, setfirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState(null);
@@ -20,10 +19,6 @@ export default function AddPatient() {
   const [E_firstName, setE_firstName] = useState(null);
   const [E_lastName, setE_lastName] = useState(null);
   const [E_contactNumber, setE_contactNumber] = useState(null);
-
-    // const handleChange = (e) => {
-    //   setState({ ...state, [e.target.name]: e.target.value });
-    // };
 
   const addNewPatient = async () => {
     const form = {
@@ -74,7 +69,6 @@ export default function AddPatient() {
                       placeholder="First Name"
                       name="firstname"
                       value={firstName}
-                      //   onChange={handleChange}
                       onChange={(e) => setfirstName(e.target.value)}
                       style={{ height: "55px" }}
                     />
@@ -117,7 +111,7 @@ export default function AddPatient() {
                     />
                   </div>
                   <div className="col-12 col-sm-6">
-                    <label for="myfile"> Sex</label>
+                    <label for="myfile">Gender</label>
                     <select
                       className="form-select bg-light border-0"
                       name="gender"
@@ -191,10 +185,6 @@ export default function AddPatient() {
                       style={{ height: "55px" }}
                     />
                   </div>
-                  {/* <div className="col-12 col-sm-6">
-                                        <label for="date"> Relationship</label>
-                                        <input type="text" className="form-control bg-light border-0" placeholder="Relationship" value={address} onChange={(e) => setAddress(e.target.value)}  style={{ height: '55px' }} />
-                                    </div> */}
                   <div className="col-12 col-sm-6">
                     <label for="date"> Contact Number</label>
                     <input

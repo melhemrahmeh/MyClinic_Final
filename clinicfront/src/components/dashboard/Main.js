@@ -1,8 +1,46 @@
 import styles from './styles.css';
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React , {useEffect , useState} from 'react'
+import axios from 'axios';
 
 export default function Main(props) {
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://127.0.0.1:8000/api/patients/")
+            .then((res) => {
+                setData(res.data);
+                console.log("Result:", data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    const [balance, setBalance] = useState(0)
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8000/api/paymentsjournal/")
+            .then((res) => {
+                setBalance(res.data);
+                console.log("Result:", data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    var totalBalanceInt = 0.0
+    var pendingBalanceint = 0.0
+
+    for (let index = 0; index < balance.length; index++) {
+        totalBalanceInt += parseFloat(balance[index].totalBalance);
+        pendingBalanceint += parseFloat(balance[index].pendingBalance);
+    }
+
 
     var is_dentist = props.is_dentist;
     var is_admin = props.is_admin;
@@ -14,7 +52,7 @@ export default function Main(props) {
         totalBalance = <li>
             <i className="bx bxs-dollar-circle" />
             <span className="text">
-                <h3>$2543</h3>
+                <h3>${totalBalanceInt.toFixed(2)}</h3>
                 <p>Total Balance</p>
             </span>
         </li>
@@ -64,24 +102,24 @@ export default function Main(props) {
                             </li>
                         </ul>
                     </div>
-                    <a href="#" className="btn-download">
-                        <Link to={"../bookappointment"}><span className="text" style={{ color: "white" }}>Add Appointment </span></Link>
-                    </a>
+                    {/* <a href="#" className="btn-download">
+                        <Link to={"../myemployees"}><span className="text" style={{ color: "white" }}>Add Appointment </span></Link>
+                    </a> */}
                 </div>
                 <div>
                     <ul className="box-info">
                         <li>
                             <i className="bx bxs-calendar-check" />
                             <span className="text">
-                                <h3>1020</h3>
-                                <p>New Order</p>
+                                <h3>${pendingBalanceint.toFixed(2)}</h3>
+                                <p>Pending Balance</p>
                             </span>
                         </li>
                         <li>
                             <i className="bx bxs-group" />
                             <span className="text">
-                                <h3>2834</h3>
-                                <p>All Patient</p>
+                                <h3>{data.length }</h3>
+                                <p>Number of Patients</p>
                             </span>
                         </li>
                         {totalBalance}

@@ -86,7 +86,7 @@ export default function MeetTheTeam() {
                                     <div className="mt-auto p-4">
                                         <h3>Nathalie Nassar</h3>
                                         <h6 className="fw-normal fst-italic text-primary mb-4">Scrum Master and Front End Developer</h6>
-                                        <p className="m-0">Description:</p>
+                                        <p className="m-0">A computer scientist interested in software engineering and machine learning. I am still a junior at the American University of Beirut</p>
                                     </div>
                                     <div className="d-flex mt-auto border-top p-4">
                                         <a className="btn btn-lg btn-primary btn-lg-square rounded-circle me-3" href="#"><i className="fab fa-twitter" /></a>

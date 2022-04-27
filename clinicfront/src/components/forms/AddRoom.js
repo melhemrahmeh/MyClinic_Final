@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+toast.configure()
 export default function AddRoom() {
-    let navigate = useNavigate();
-    const [room_name, setroom_name] = useState(null);
 
+    const [room_name, setroom_name] = useState("");
+    const notify = () => toast(`Room ${room_name} Added!`);
     const addNewRoom = async () => {
         const form = {
             room_name,
@@ -18,13 +20,11 @@ export default function AddRoom() {
         })
             .then((response) => {
                 console.log(response.data);
-                navigate("/myrooms");
             })
             .catch((e) => {
                 console.log(e);
             });
     };
-
     return (
         <div className="container-fluid bg-primary my-5 py-5">
             <div
@@ -46,7 +46,8 @@ export default function AddRoom() {
                                         <input
                                             type="text"
                                             className="form-control bg-light border-0"
-                                            placeholder="Operation Name"
+                                            placeholder="Room Name"
+                                            name="room_name"
                                             value={room_name}
                                             onChange={(e) => setroom_name(e.target.value)}
                                             style={{ height: "55px" }}
@@ -61,18 +62,26 @@ export default function AddRoom() {
                                         <br />
                                         <button
                                             className="btn btn-primary w-100 py-3"
-                                            type="submit"
-                                            onClick={addNewRoom}
+                                            onClick={() => { addNewRoom(); notify(); }}
                                         >
                                             Add Room
                                         </button>
                                     </div>
                                 </div>
                             </form>
+                            <ToastContainer
+                                autoClose={10000}
+                                hideProgressBar={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                            />
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

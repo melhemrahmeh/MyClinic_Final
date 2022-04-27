@@ -5,19 +5,35 @@ import axios from "axios";
 
 export default function ClinicRooms() {
     const [data, setData] = useState([]);
-    useEffect(() => {
-        axios
-            .get("http://127.0.0.1:8000/api/rooms/")
-            .then((res) => {
-                setData(res.data);
-                console.log("Result:", data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+    const WAIT_TIME = 500;
 
-    const [buttonPopup, setButtonPopup] = useState(false);
+    useEffect(() => {
+        const id = setInterval(() => {
+            axios
+                .get("http://127.0.0.1:8000/api/rooms/")
+                .then((res) => {
+                    setData(res.data);
+                    console.log("Result:", data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }, WAIT_TIME);
+        return () => clearInterval(id);
+    }, [data]);
+
+
+
+    function deleteRow(id, e) {
+        axios.delete(`http://127.0.0.1:8000/api/rooms/delete/${id}/`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+
+                const posts = data.filter(item => item.id !== id);
+                setData(posts);
+            })
+    }
 
     return (
         <>
@@ -32,8 +48,6 @@ export default function ClinicRooms() {
                         <thead>
                             <tr>
                                 <th style={{ 'color': "#535356" }}>Room Name</th>
-                                <th style={{ 'color': "#535356" }}>Description</th>
-                                <th style={{ 'color': "#535356" }}>Price</th>
                                 <th style={{ 'color': "#535356" }}>Actions</th>
                             </tr>
                         </thead>
@@ -44,9 +58,7 @@ export default function ClinicRooms() {
 
                                     <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                                         <td style={{ 'color': "#5D5C63" }}>{room.room_name}</td>
-                                        <td style={{ 'color': "#5D5C63" }}>1</td>
-                                        <td style={{ 'color': "#5D5C63" }}>cost</td>
-                                        <td style={{ 'color': "#5D5C63" }}> <button type="button" class="btn btn-info" onClick={() => setButtonPopup(true)}>Edit</button>   or   <button type="button" class="btn btn-danger">Delete</button></td>
+                                        <td style={{ 'color': "#5D5C63" }}><button type="button" class="btn btn-danger" onClick={(e) => deleteRow(room._id, e)}>Delete</button></td>
                                     </tr>
                                 </>
                             ))}

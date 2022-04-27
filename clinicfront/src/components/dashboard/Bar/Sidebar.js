@@ -6,7 +6,7 @@ import * as AiIcons from "react-icons/ai";
 import SidebarData from "./SidebarData";
 import SubMenu from "./SubMenu";
 import { IconContext } from "react-icons/lib";
-
+import logo1 from '../assets/logo1.png'; // Tell webpack this JS file uses this image
 const Nav = styled.div`
 background: #F9F9F9;
 height: 80px;
@@ -71,7 +71,13 @@ function Sidebar(props) {
 								color: "#26B0C2"
 							}}
 						>
-							MyClinic
+							<Link to={"/dashboard"}> <img src={logo1} class="img-fluid" alt="Responsive image" style={{
+								objectFit: 'contain',
+								width: '15%',
+								height: '8%',
+								marginBottom : '10px'
+							}} /></Link>
+
 						</h1>
 					</section>
 				</Nav>

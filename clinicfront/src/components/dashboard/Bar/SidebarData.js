@@ -112,8 +112,8 @@ export default function SidebarData(is_dentist, is_admin, is_nurse, is_secretary
 				],
 			},
 			{
-				title: "After Visit Summary",
-				path: "/aftervisit",
+				title: "Visit Summary",
+				path: "/visit",
 				icon: <AiIcons.AiOutlineForm />,
 			},
 			{

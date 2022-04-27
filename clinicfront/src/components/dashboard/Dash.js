@@ -22,7 +22,6 @@ export default function Dash() {
                     </ul>
                 </div>
                 <a href="#" className="btn-download">
-                    <Link to={"../bookappointment"}><span className="text" style={{ color: "white" }}>Add Appointment </span></Link>
                 </a>
             </div>
             <div>

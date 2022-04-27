@@ -10,8 +10,8 @@ export default function MainPageImage() {
             <h5 className="d-inline-block text-primary text-uppercase border-bottom border-5" style={{ borderColor: 'rgba(256, 256, 256, .3) !important' }}>Welcome To MyClinic</h5>
             <h1 className="display-1 text-white mb-md-4">Best HealthCare, From the Comfort of Your Home</h1>
             <div className="pt-2">
-              <a className="btn btn-light rounded-pill py-md-3 px-md-5 mx-2"><Link to="/contactus"> Contact us</Link></a>
-              <a className="btn btn-outline-light rounded-pill py-md-3 px-md-5 mx-2"> <Link to="/bookappointment"><span className="text">Add Appointment </span></Link></a>
+              <a className="btn btn-light rounded-pill py-md-3 px-md-5 mx-2"><Link to="/contactus">Contact us</Link></a>
+              <a className="btn btn-light rounded-pill py-md-3 px-md-5 mx-2"> <Link to="/bookappointment">Book Appointment</Link></a>
             </div>
           </div>
         </div>
