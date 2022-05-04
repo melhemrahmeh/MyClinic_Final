@@ -1,18 +1,40 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import emailjs from 'emailjs-com';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
 
 export default function ContactUs() {
 
-    let navigate = useNavigate();
-    const [name, setName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [subject, setSubject] = useState(null);
-    const [message, setMessage] = useState(null);
-    const [PhoneNumber, setPhoneNumber] = useState(null);
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [subject, setSubject] = useState("");
+    const [message, setMessage] = useState("");
+    const [PhoneNumber, setPhoneNumber] = useState("");
+
+    const notify = () => toast.success("Contact Request sent !");
 
 
-    const addContact = async () => {
+    const handleSubmit = (e) => {
+        const values = {
+            name: name,
+            subject: subject,
+            message: message,
+            email: email
+        };
+        e.preventDefault();
+        emailjs.send("service_cdbgjsl", "template_9linfvx", values, 'UbFpX8EG6MxSiWGwd')
+            .then(response => {
+                console.log('SUCCESS!', response);
+            }, error => {
+                console.log('FAILED...', error);
+            });
+    }
+    const addContact = async (e) => {
+        e.preventDefault();
         const form = {
             name,
             email,
@@ -28,7 +50,6 @@ export default function ContactUs() {
         })
             .then((response) => {
                 console.log(response.data);
-                navigate("/");
             })
             .catch((e) => {
                 console.log(e);
@@ -107,13 +128,23 @@ export default function ContactUs() {
                                         <button
                                             className="btn btn-primary w-100 py-3"
                                             type="submit"
-                                            onClick={addContact}
+                                            onClick={(e) => { addContact(e); notify(); handleSubmit(e) }}
                                         >
                                             Send
                                         </button>
                                     </div>
                                 </div>
                             </form>
+                            <ToastContainer
+                                autoClose={4000}
+                                hideProgressBar={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnFocusLoss
+                                draggable
+                                pauseOnHover
+                            />
+
                         </div>
                     </div>
                 </div>

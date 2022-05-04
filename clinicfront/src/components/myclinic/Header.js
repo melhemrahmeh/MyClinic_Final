@@ -7,9 +7,9 @@ export default function Header() {
         <div className="row">
           <div className="col-md-6 text-center text-lg-start mb-2 mb-lg-0">
             <div className="d-inline-flex align-items-center">
-              <a className="text-decoration-none text-body pe-3" href><i className="bi bi-telephone me-2" />+961 000 000</a>
+              <a className="text-decoration-none text-body pe-3" href><i className="bi bi-telephone me-2" />+961 71 589 832</a>
               <span className="text-body">|</span>
-              <a className="text-decoration-none text-body px-3" href><i className="bi bi-envelope me-2" />example@myclinic.com</a>
+              <a className="text-decoration-none text-body px-3" href><i className="bi bi-envelope me-2" />myclinic.cmps253@gmail.com</a>
             </div>
           </div>
           <div className="col-md-6 text-center text-lg-end">

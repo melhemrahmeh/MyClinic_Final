@@ -12,5 +12,4 @@ urlpatterns = [
     path('<str:pk>/', views.getOperation, name="operation"),
     path('update/<str:pk>/', views.putOperation, name="operation-update"),
     path('delete/<str:pk>/', views.deleteOperation, name="operation-delete")
-   
-] 
+]

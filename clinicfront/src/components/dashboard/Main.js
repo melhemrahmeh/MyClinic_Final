@@ -1,6 +1,6 @@
 import styles from './styles.css';
 import { Link } from 'react-router-dom'
-import React , {useEffect , useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 export default function Main(props) {
@@ -19,26 +19,12 @@ export default function Main(props) {
             });
     }, []);
 
-    const [balance, setBalance] = useState(0)
-
-    useEffect(() => {
-        axios
-            .get("http://localhost:8000/api/paymentsjournal/")
-            .then((res) => {
-                setBalance(res.data);
-                console.log("Result:", data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
-
     var totalBalanceInt = 0.0
     var pendingBalanceint = 0.0
 
-    for (let index = 0; index < balance.length; index++) {
-        totalBalanceInt += parseFloat(balance[index].totalBalance);
-        pendingBalanceint += parseFloat(balance[index].pendingBalance);
+    for (let index = 0; index < data.length; index++) {
+        totalBalanceInt += parseFloat(data[index].totalBalance);
+        pendingBalanceint += parseFloat(data[index].pendingBalance);
     }
 
 
@@ -48,7 +34,7 @@ export default function Main(props) {
     var is_secretary = props.is_secretary;
 
     var totalBalance = <></>
-    if (!is_admin && !is_nurse ) { 
+    if (!is_admin && !is_nurse) {
         totalBalance = <li>
             <i className="bx bxs-dollar-circle" />
             <span className="text">
@@ -118,7 +104,7 @@ export default function Main(props) {
                         <li>
                             <i className="bx bxs-group" />
                             <span className="text">
-                                <h3>{data.length }</h3>
+                                <h3>{data.length}</h3>
                                 <p>Number of Patients</p>
                             </span>
                         </li>

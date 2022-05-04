@@ -2,30 +2,61 @@ import React from 'react'
 import PopupOperation from '../forms/PopupOperation';
 import { useState, useEffect } from 'react';
 import axios from "axios";
- 
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function ClinicOperation() {
     const [operations, setOperations] = useState([]);
-    const WAIT_TIME = 500;
+    const WAIT_TIME = 200;
 
     useEffect(() => {
         const id = setInterval(() => {
             axios
-            .get("http://127.0.0.1:8000/api/operations/")
-            .then((res) => {
-                setOperations(res.data);
-                console.log("Result:", res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                .get("http://127.0.0.1:8000/api/operations/")
+                .then((res) => {
+                    setOperations(res.data);
+                    console.log("Result:", res.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }, WAIT_TIME);
         return () => clearInterval(id);
     }, [operations]);
 
 
     const [buttonPopup, setButtonPopup] = useState(false);
- 
 
+    toast.configure()
+
+    const [title, setTitle] = useState(null);
+    const [cost, setCost] = useState(null);
+    const [description, setDescription] = useState(null);
+
+    const notify = () => toast.success(`Operation ${title} Updated!`);
+
+    const updateOperation = async (id, e , room) => {
+        e.preventDefault();
+        const form = {
+            title,
+            cost,
+            description,
+            room,
+        };
+        console.log(form);
+        await axios({
+            method: "PUT",
+            url: `http://127.0.0.1:8000/api/operations/update/${id}/`,
+            data: form,
+        })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
 
     function deleteRow(id, e) {
         axios.delete(`http://127.0.0.1:8000/api/operations/delete/${id}/`)
@@ -37,8 +68,6 @@ export default function ClinicOperation() {
                 setOperations(posts);
             })
     }
-
-
 
     return (
         <>
@@ -58,11 +87,11 @@ export default function ClinicOperation() {
                                 <th style={{ 'color': "#535356" }}>Actions</th>
                             </tr>
                         </thead>
- 
+
                         <tbody>
                             {operations.map((operation) => (
                                 <>
- 
+
                                     <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                                         <td style={{ 'color': "#5D5C63" }}>{operation.title}</td>
                                         <td style={{ 'color': "#5D5C63" }}>{operation.description}</td>
@@ -78,23 +107,69 @@ export default function ClinicOperation() {
                                                         <br />
                                                         <form>
                                                             <div className="row g-3">
-                                                                <div className="col-12 col-sm-6">
+                                                                <div
+                                                                    className="col-12 col-sm-6"
+                                                                    style={{ width: "60%", margin: "auto" }}
+                                                                >
                                                                     <label for="date"> Operation Name</label>
-                                                                    <input type="text" className="form-control bg-light border-0" placeholder="Operation Name" style={{ height: '55px' }} />
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control bg-light border-0"
+                                                                        placeholder="Operation Name"
+                                                                        value={title}
+                                                                        name="title"
+                                                                        onChange={(e) => setTitle(e.target.value)}
+                                                                        style={{ height: "55px" }}
+                                                                    />
                                                                 </div>
-                                                                <div className="col-12 col-sm-6">
+                                                                <div
+                                                                    className="col-12 col-sm-6"
+                                                                    style={{ width: "60%", margin: "auto" }}
+                                                                >
+                                                                    <br />
                                                                     <label for="date"> Price</label>
-                                                                    <input type="number" className="form-control bg-light border-0" placeholder="Operation Price" step="1" min="0" max="1000" style={{ height: '55px' }} />
+                                                                    <input
+                                                                        type="number"
+                                                                        className="form-control bg-light border-0"
+                                                                        placeholder="Operation Price"
+                                                                        step="1"
+                                                                        min="0"
+                                                                        max="1000"
+                                                                        name="cost"
+                                                                        value={cost}
+                                                                        onChange={(e) => setCost(e.target.value)}
+                                                                        style={{ height: "55px" }}
+                                                                    />
                                                                 </div>
-                                                                <div className="col-12 col-sm-6" >
+                                                                <div
+                                                                    className="col-12 col-sm-6"
+                                                                    style={{ width: "60%", margin: "auto" }}
+                                                                >
+                                                                    <br />
                                                                     <label for="myfile"> Description</label>
-                                                                    <textarea rows="4" cols="80" className="form-control bg-light border-0">
-                                                                    </textarea>
+                                                                    <textarea
+                                                                        rows="4"
+                                                                        cols="80"
+                                                                        placeholder="Operation Description"
+                                                                        className="form-control bg-light border-0"
+                                                                        name="description"
+                                                                        value={description}
+                                                                        onChange={(e) => setDescription(e.target.value)}
+                                                                    ></textarea>
                                                                 </div>
-                                                                <div className="col-12" >
-                                                                    <button className="btn btn-primary w-100 py-3" type="submit">Book</button>
+                                                                <div
+                                                                    className="col-12"
+                                                                    style={{ width: "70%", margin: "auto" }}
+                                                                >
+                                                                    <br />
+                                                                    <button
+                                                                        className="btn btn-primary w-100 py-3"
+                                                                        type="submit"
+                                                                        onClick={(e) => { updateOperation(operation._id, e, operation.room); notify(e)}}
+                                                                    >
+                                                                        Update Operation
+                                                                    </button>
                                                                 </div>
- 
                                                             </div>
                                                         </form>
                                                     </div>
@@ -111,6 +186,6 @@ export default function ClinicOperation() {
             </div>
         </>
     );
- 
+
 }
- 
+

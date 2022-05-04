@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default function ClinicRooms() {
     const [data, setData] = useState([]);
-    const WAIT_TIME = 500;
+    const WAIT_TIME = 200;
 
     useEffect(() => {
         const id = setInterval(() => {
@@ -68,6 +68,4 @@ export default function ClinicRooms() {
             </div>
         </>
     );
-
 }
-

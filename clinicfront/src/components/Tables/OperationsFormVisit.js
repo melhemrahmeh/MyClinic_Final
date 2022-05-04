@@ -17,39 +17,35 @@ export default function OperationsFormVisit(props) {
             .catch((error) => {
                 console.log(error);
             });
-    } , []);
+    }, []);
+    const [state, setState] = useState([]);
 
-
-
-    const getFormattedPrice = (price) => `${price}`;
+    console.log(operations.length);
+    let arr = []
+    arr.length = operations.length
+    arr.fill(false)
+    console.log(arr);
+    setState(arr)
     const [total, setTotal] = useState(0);
 
-    const [checkedState, setCheckedState] = useState(
-        new Array(operations.length).fill(false)
-    );
     const handleOnChange = (position) => {
-        const updatedCheckedState = checkedState.map((item, index) =>
+        const updatedCheckedState = arr.map((item, index) =>
             index === position ? !item : item
         );
-
-        setCheckedState(updatedCheckedState);
+        setState(updatedCheckedState)
 
         const totalPrice = updatedCheckedState.reduce(
             (sum, currentState, index) => {
-                if (currentState === true) {
-                    return sum + operations[index].cost;
+                if (currentState) {
+                    return sum + parseInt(operations[index].cost);
                 }
                 return sum;
             },
             0
         );
-
         setTotal(totalPrice);
     };
 
-
-    var is_admin = props.is_admin;
-    if (is_admin) { return <></>; }
     return (
         <div style={{ "marginLeft": "10px" }}>
             <br />
@@ -70,20 +66,20 @@ export default function OperationsFormVisit(props) {
                                                 id={`custom-checkbox-${index}`}
                                                 name={title}
                                                 value={title}
-                                                checked={checkedState[index]}
+                                                checked={arr[index]}
                                                 onChange={() => handleOnChange(index)}
                                             />
                                             <label htmlFor={`custom-checkbox-${index}`}>{title}</label>
                                         </div>
-                                        <div className="right-section">{getFormattedPrice(cost)}</div>
+                                        <div className="right-section">{cost}</div>
                                     </div>
                                 </li>
                             );
                         })}
                         <li>
                             <div className="toppings-list-item">
-                                <div className="left-section">Total:</div>
-                                <div className="right-section">{getFormattedPrice(total)}</div>
+                                <div className="left-section">Total Amount Due:</div>
+                                <div className="right-section">{total} $</div>
                             </div>
                         </li>
                     </ul>

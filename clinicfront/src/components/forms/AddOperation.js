@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 
@@ -14,7 +14,7 @@ export default function AddOperation() {
   const [cost, setCost] = useState(null);
   const [description, setDescription] = useState(null);
   const [room, setRoom] = useState(1);
-  const notify = () => toast(`Operation ${title} Added!`);
+  const notify = () => toast.success(`Operation ${title} Added!`);
   const addNewOperation = async (e) => {
     e.preventDefault();
     const form = {

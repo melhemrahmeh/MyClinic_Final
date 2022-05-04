@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import React from "react";
-import logo from './assets/logo.jpeg'; // Tell webpack this JS file uses this image
+import logo2 from './assets/logo2.png'; // Tell webpack this JS file uses this image
 
 export default function NavBar() {
   return (
@@ -9,10 +9,10 @@ export default function NavBar() {
       <div className="container">
         <nav className="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0">
           <a className="navbar-brand">
-            <Link to={"/"}> <img src={logo} class="img-fluid" alt="Responsive image" style={{
+            <Link to={"/"}> <img src={logo2} class="img-fluid" alt="Responsive image" style={{
               objectFit: 'contain',
-              width: '20%',
-              height: '10%'
+              width: '30%',
+              height: '30%'
             }} /></Link>
           </a>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

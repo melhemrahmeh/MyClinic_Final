@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.core.files.storage import default_storage
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
-
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 def getVisits(request):
@@ -20,24 +19,19 @@ def getVisits(request):
     visit_serializer = VisitSerializer(visits, many=True)
     return Response(visit_serializer.data)
 
-
 @api_view(['GET'])
 #@permission_classes([IsAuthenticated])
 def getVisit(request, pk):
-    visits  = Visit.objects.get(_id=pk)
+    visits  = Visit.objects.filter(_id=pk)
     serializer = VisitSerializer(visits, many=False)
     return Response(serializer.data)
-
 
 def getVisitsPatient(request, pk):
     visits  = Visit.objects.get(patient=pk) 
     serializer = VisitSerializer(visits, many=False)
     return JsonResponse(serializer.data)
 
-
-
-#@api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@api_view(['POST'])
 def postVisit(request):
     # permission_classes = [IsAdminUser]
     visit = JSONParser().parse(request)
@@ -72,7 +66,7 @@ def deleteVisit(request, pk):
 
 def uploadImage(request):
     data = request.data
-    visit_id = data['visit_id']
+    visit_id = data['_id']
     visit = Visit.objects.get(_id=visit_id)
     visit.image = request.FILES.get('image')
     visit.save()

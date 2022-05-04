@@ -7,8 +7,9 @@ toast.configure()
 export default function AddRoom() {
 
     const [room_name, setroom_name] = useState("");
-    const notify = () => toast(`Room ${room_name} Added!`);
-    const addNewRoom = async () => {
+    const notify = () => toast.success(`Room ${room_name} Added!`);
+    const addNewRoom = async (e) => {
+        e.preventDefault();
         const form = {
             room_name,
         };
@@ -62,7 +63,7 @@ export default function AddRoom() {
                                         <br />
                                         <button
                                             className="btn btn-primary w-100 py-3"
-                                            onClick={() => { addNewRoom(); notify(); }}
+                                            onClick={(e) => { addNewRoom(e); notify(); }}
                                         >
                                             Add Room
                                         </button>

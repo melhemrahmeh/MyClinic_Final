@@ -12,4 +12,3 @@ urlpatterns = [
     path('update/<str:pk>/', views.putVisit, name="visit-update"),
     path('delete/<str:pk>/', views.deleteVisit, name="visit-delete"),
 ]
-    

@@ -15,22 +15,11 @@ export default function DashMainTables(props) {
     const [operation, setOperation] = useState(1);
 
     const addNewAppointment = async () => {
-        /*var form = new FormData();
-        bodyFormData.append('image', imageFile);
-        bodyFormData.append('image', imageFile);
-        bodyFormData.append('image', imageFile);
-        bodyFormData.append('image', imageFile);
-        bodyFormData.append('image', imageFile);
-        bodyFormData.append('image', imageFile);*/
         const form = {
-            //firstName,
-            //lastName,
-            //email,
             date,
             time,
             operation
         };
-        //console.log(form);
         await axios({
             method: "POST",
             url: "http://127.0.0.1:8000/api/appointments/create/",
@@ -56,8 +45,6 @@ export default function DashMainTables(props) {
                 console.log(error);
             });
     }, []);
-
-    //http://127.0.0.1:8000/api/patients/visits/
 
     const [visits, setVisits] = useState([]);
 
@@ -85,8 +72,6 @@ export default function DashMainTables(props) {
                 console.log(error);
             });
     }, []);
-
-
 
     var patientsNames = []
     var patientsNumbers = []
@@ -122,7 +107,6 @@ export default function DashMainTables(props) {
             if (appointments[i].operation === operations[j]._id) {
                 operationsName.push(operations[j].title)
                 operationsPrice.push(operations[j].cost)
-
             }
         }
     }
@@ -142,6 +126,17 @@ export default function DashMainTables(props) {
                 const posts = appointments.filter(item => item.id !== id);
                 setAppointments(posts);
             })
+    }
+
+
+    var operationsVisitName = []
+
+    for (var i = 0; i < visits.length; i++) {
+        for (var j = 0; j < operations.length; j++) {
+            if (visits[i].operation === operations[j]._id) {
+                operationsVisitName.push(operations[j].title)
+            }
+        }
     }
 
 
@@ -244,18 +239,19 @@ export default function DashMainTables(props) {
                         <thead>
                             <tr>
                                 <th style={{ 'color': "#535356" }}>Name</th>
+                                <th style={{ 'color': "#535356" }}>Email</th>
                                 <th style={{ 'color': "#535356" }}>Date and Time</th>
                                 <th style={{ 'color': "#535356" }}>Operation</th>
                                 <th style={{ 'color': "#535356" }}>Expected Fee</th>
                                 <th style={{ 'color': "#535356" }}>Actions</th>
-
                             </tr>
                         </thead>
 
                         <tbody>
                             {appointments.map((appt, index) => (
                                 <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                                    <td style={{ 'color': "#5D5C63" }}>{appt.firstName +" "+ appt.lastName}</td>
+                                    <td style={{ 'color': "#5D5C63" }}>{appt.firstName + " " + appt.lastName}</td>
+                                    <td style={{ 'color': "#5D5C63" }}>{appt.email}</td>
                                     <td style={{ 'color': "#5D5C63" }}>{appt.date + " at " + appt.time}</td>
                                     <td style={{ 'color': "#5D5C63" }}>{operationsName[index]}</td>
                                     <td style={{ 'color': "#5D5C63" }}>{operationsPrice[index]} $</td>
@@ -291,10 +287,10 @@ export default function DashMainTables(props) {
                                 <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                                     <td style={{ 'color': "#5D5C63" }}>{patientsNames[index]}</td>
                                     <td style={{ 'color': "#5D5C63" }}>{patientsNumbers[index]}</td>
-                                    <td style={{ 'color': "#5D5C63" }}>{visit.todayvisit + " at " + visit.time}</td>
-                                    <td style={{ 'color': "#5D5C63" }}>{visit.operation}</td>
-                                    <td style={{ 'color': "#5D5C63" }}>0</td>
-                                    <td style={{ 'color': "#5D5C63" }}>0</td>
+                                    <td style={{ 'color': "#5D5C63" }}>{visit.visitdate}</td>
+                                    <td style={{ 'color': "#5D5C63" }}>{operationsVisitName[index]}</td>
+                                    <td style={{ 'color': "#5D5C63" }}>0$</td>
+                                    <td style={{ 'color': "#5D5C63" }}>0$</td>
                                 </tr>
                             ))}
                         </tbody>

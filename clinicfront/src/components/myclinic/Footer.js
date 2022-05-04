@@ -33,8 +33,8 @@ export default function Footer(props) {
             <h4 className="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4" >MyClinic</h4>
             <p className="mb-4">MyClinic is a web application to helps you organize your visits to your doctor from the comfort of your home!</p>
             <p className="mb-2"><i className="fa fa-map-marker-alt text-primary me-3" />Hamra Street, Beirut, Lebanon</p>
-            <p className="mb-2"><i className="fa fa-envelope text-primary me-3" />info@myclinic.com</p>
-            <p className="mb-0"><i className="fa fa-phone-alt text-primary me-3" />+961 1000000</p>
+            <p className="mb-2"><i className="fa fa-envelope text-primary me-3" />myclinic.cmps253@gmail.com</p>
+            <p className="mb-0"><i className="fa fa-phone-alt text-primary me-3" />+961 71 589 832</p>
           </div>
           <div className="col-lg-3 col-md-6">
             <h4 className="d-inline-block text-primary text-uppercase border-bottom border-5 border-secondary mb-4">Quick Links</h4>
@@ -61,9 +61,23 @@ export default function Footer(props) {
               <a className="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="https://www.linkedin.com/"><i className="fab fa-linkedin-in" /></a>
               <a className="btn btn-lg btn-primary btn-lg-square rounded-circle me-2" href="https://www.instagram.com/"><i className="fab fa-instagram" /></a>
             </div>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
   );
 }
+
+
+
+
+
+
+// Opening Hour
+// Monday: 08: 00 - 18: 00
+// Tuesday: 08: 00 - 18: 00
+// Wednesday: 08: 00 - 18: 00
+// Thursday: 08: 00 - 18: 00
+// Friday: 08: 00 - 18: 00
+// Saturday: 08: 00 - 18: 00
+// Sunday: 08: 00 - 18: 00

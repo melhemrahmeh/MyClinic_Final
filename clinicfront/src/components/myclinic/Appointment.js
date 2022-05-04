@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom'
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import emailjs from 'emailjs-com';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure()
 
 export default function Appointment() {
   const [data, setData] = useState([]);
@@ -12,11 +17,50 @@ export default function Appointment() {
   const [time, setTime] = useState("");
   const [operation, setOperation] = useState(1);
 
+  const [appointments, setAppointments] = useState([]);
 
-  let navigate = useNavigate();
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/appointments/")
+      .then((res) => {
+        setAppointments(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-  const addNewAppointment = async () => {
+  var notify = () => toast.success(`Appointment for ${firstName + " " + lastName} Booked! You should receive an email shortly.`);
 
+  // for (let index = 0; index < appointments.length; index++) {
+  //   const element = appointments[index];
+  //   if ((element.time.substring(0, 2) === time.substring(0, 2) && (parseInt(element.time.substring(3, 5)) < 30 + parseInt(time.substring(3, 5)) || parseInt(element.time.substring(3, 5)) > 30 + parseInt(time.substring(3, 5)) )) && element.date === date) {
+  //     notify = () => toast.danger(`Appointment for ${firstName + " " + lastName} Booked! You should receive an email shortly.`);
+  //   }
+  // }
+
+
+  const handleSubmit = (e) => {
+    var name = firstName + " " + lastName
+    var subject = "Appointment Booked"
+    var message = "Appointment Booked: " + name + " on " + date + " at " + time
+    const values = {
+      name: name,
+      email: email,
+      subject: subject,
+      message: message
+    };
+    e.preventDefault();
+    emailjs.send("service_cdbgjsl", "template_kpdebor", values, 'UbFpX8EG6MxSiWGwd')
+      .then(response => {
+        console.log('SUCCESS!', response);
+      }, error => {
+        console.log('FAILED...', error);
+      });
+  }
+
+  const addNewAppointment = async (e) => {
+    e.preventDefault();
     const form = {
       firstName,
       lastName,
@@ -33,7 +77,6 @@ export default function Appointment() {
     })
       .then((response) => {
         console.log(response.data);
-        navigate("/");
       })
       .catch((e) => {
         console.log(e);
@@ -63,15 +106,15 @@ export default function Appointment() {
               <h1 className="display-4">Make An Appointment For You or for Your Family</h1>
             </div>
             <p className="text-white mb-5">The Easiest Way to Book an Appointment! </p>
-            <Link to={"/operations"} className="btn btn-dark rounded-pill py-3 px-5 me-3">See Operations' List</Link>
-            <a className="btn btn-outline-dark rounded-pill py-3 px-5" href>Read More</a>
+            <Link to={"/about"} className="btn btn-dark rounded-pill py-3 px-5 me-3">Read More</Link>
+            {/* <Link to={"/about"} className="btn btn-outline-dark rounded-pill py-3 px-5" href>Read More</Link> */}
           </div>
           <div className="col-lg-6">
             <div className="bg-white text-center rounded p-5">
               <h1 className="mb-4">Book An Appointment</h1>
               <h5>New? <Link to={"/contactus"}>Contact us</Link></h5>
               <br />
-              <form>
+              <form >
                 <div className="row g-3">
                   <div className="col-12 col-sm-6">
 
@@ -80,7 +123,6 @@ export default function Appointment() {
                       placeholder="First Name"
                       name="firstName"
                       value={firstName}
-                      //   onChange={handleChange}
                       onChange={(e) => setfirstName(e.target.value)}
                       style={{ height: "55px" }}
                       required
@@ -92,7 +134,6 @@ export default function Appointment() {
                       placeholder="Last Name"
                       name="lastName"
                       value={lastName}
-                      //   onChange={handleChange}
                       onChange={(e) => setLastName(e.target.value)}
                       style={{ height: "55px" }}
                       required
@@ -104,7 +145,6 @@ export default function Appointment() {
                       placeholder="Enter your mail"
                       name="email"
                       value={email}
-                      //   onChange={handleChange}
                       onChange={(e) => setEmail(e.target.value)}
                       style={{ height: "55px" }}
                       required
@@ -148,7 +188,9 @@ export default function Appointment() {
                         onChange={(e) => setTime(e.target.value)}
                         className="form-control bg-light border-0 datetimepicker-input"
                         style={{ height: "55px" }}
-                        min="09:00" max="18:00" step="1800"
+                        min={`${new Date().toLocaleTimeString()}`}
+                        max="18:00"
+                        step="1800"
                         required
                       />
                     </div>
@@ -157,13 +199,22 @@ export default function Appointment() {
                     <button
                       className="btn btn-primary w-100 py-3"
                       type="submit"
-                      onClick={addNewAppointment}
+                      onClick={(e) => { addNewAppointment(e); notify(); handleSubmit(e) }}
                     >
                       Book
                     </button>
                   </div>
                 </div>
               </form>
+              <ToastContainer
+                autoClose={4000}
+                hideProgressBar={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
             </div>
           </div>
         </div>

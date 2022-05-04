@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
-
+toast.configure()
 
 export default function AddPatient() {
-
-  let navigate = useNavigate();
   const [firstName, setfirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [PhoneNumber, setPhoneNumber] = useState(null);
@@ -19,8 +17,12 @@ export default function AddPatient() {
   const [E_firstName, setE_firstName] = useState(null);
   const [E_lastName, setE_lastName] = useState(null);
   const [E_contactNumber, setE_contactNumber] = useState(null);
+  const notify = () => toast.success(`Patient ${firstName + " " + lastName} Added!`);
+  const addNewPatient = async (e) => {
+    e.preventDefault();
+    const totalBalance = 0
+    const pendingBalance = 0
 
-  const addNewPatient = async () => {
     const form = {
       firstName,
       lastName,
@@ -32,7 +34,10 @@ export default function AddPatient() {
       E_firstName,
       E_lastName,
       E_contactNumber,
+      totalBalance,
+      pendingBalance
     };
+
     console.log(form);
     await axios({
       method: "POST",
@@ -41,7 +46,6 @@ export default function AddPatient() {
     })
       .then((response) => {
         console.log(response.data);
-        navigate("/mypatients");
       })
       .catch((e) => {
         console.log(e);
@@ -206,10 +210,19 @@ export default function AddPatient() {
                 <button
                   className="btn btn-primary w-100 py-3"
                   type="submit"
-                  onClick={addNewPatient}
+                  onClick={(e) => { addNewPatient(e); notify(); }}
                 >
                   Add Patient
                 </button>
+                <ToastContainer
+                  autoClose={4000}
+                  hideProgressBar={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
               </div>
             </div>
           </div>
